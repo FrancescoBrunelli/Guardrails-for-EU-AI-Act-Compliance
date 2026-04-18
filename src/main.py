@@ -31,7 +31,7 @@ input_ids = tokenizer.apply_chat_template(
     conversation, return_tensors="pt"
 ).to(model.device)
 
-# BatchEncoding wraps a list of Encoding objects
+# BatchEncoding wraps a list of Encoding objects 
 input_ids = input_ids[0].ids
 
 input_ids = torch.tensor([input_ids], dtype=torch.long)
