@@ -1,0 +1,22 @@
+#!/bin/bash
+# Job name:
+#PBS -N Guardrail_benchmarking
+# Output files:
+#PBS -o runtime.out
+# Error files
+#PBS -e runtime.err
+# Queue name
+#PBS -q short_GPUQ
+# Set the maximum wall time
+#PBS -l walltime=06:00:00
+# Set the memory cpus and resources
+#PBS -l select=1:ngpus=1
+
+# Load modules
+source envs/llm-env/bin/activate
+# Select the working directory
+cd "$PBS_O_WORKDIR" # go to the directory where qsub was run # Compile and run
+
+python3 src/main.py
+
+
