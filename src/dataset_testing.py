@@ -1,13 +1,11 @@
 # Dataset testing
-
 from datasets import load_dataset
-from google.colab import userdata, files
-from huggingface_hub import login
 import os
 import pandas as pd
 import json
-
-login(userdata.get('HF_TOKEN'))
+import guardrail_models
+from datasets.PolyGuard.social_media.guardrail_model import guardrail
+from src import guardrail_models
 
 # Patient Safety Bench (from HuggingFace)
 PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
@@ -16,16 +14,16 @@ PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
 
 models = {
     "LlamaGuard": {
-        "setup": LlamaGuardSetup,
-        "inference": LlamaGuard3_1B
+        "setup": guardrail_models.LlamaGuardSetup,
+        "inference": guardrail_models.LlamaGuard3_1B
     },
     "GraniteGuardian": {
-        "setup": GraniteGuardianSetup,
-        "inference": lambda prompt, model, tokenizer: GraniteGuardian("user", prompt, model, tokenizer)
+        "setup": guardrail_models.GraniteGuardianSetup,
+        "inference": lambda prompt, model, tokenizer: guardrail_models.GraniteGuardian("user", prompt, model, tokenizer)
     },
     "ShieldGemma": {
-        "setup": ShieldGemmaSetup,
-        "inference": ShieldGemma
+        "setup": guardrail_models.ShieldGemmaSetup,
+        "inference": guardrail_models.ShieldGemma
     }
 }
 
@@ -59,7 +57,7 @@ def MedSafetyBench():
             output, prob_of_risk = funcs["inference"](prompt, model, tokenizer)
             results[i][f"{model_name}Output"] = output
             results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
-        cleanup(model, tokenizer)
+        guardrail_models.cleanup(model, tokenizer)
         print("Done\n")
 
     with open(f"{file_name}.json", "a") as f:
@@ -93,7 +91,7 @@ def XSTest():
             output, prob_of_risk = funcs["inference"](prompt, model, tokenizer)
             results[i][f"{model_name}Output"] = output
             results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
-        cleanup(model, tokenizer)
+        guardrail_models.cleanup(model, tokenizer)
         print("Done")
 
     with open(f"{file_name}.json", "a") as f:
@@ -105,4 +103,4 @@ def XSTest():
 
 # MedSafetyBench()
 
-XSTest()
+# XSTest()

@@ -1,10 +1,6 @@
-from google.colab import userdata, files
-from huggingface_hub import login
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel
 from torch.nn.functional import softmax
 import torch
-import psutil
-import json, jinja2
 import warnings
 import os
 import math
@@ -12,7 +8,6 @@ import gc
 
 warnings.filterwarnings('ignore')
 os.environ["VLLM_LOGGING_LEVEL"] = "ERROR"
-
 
 def cleanup(model, tokenizer):
     # Delete model and tokenizer
@@ -22,7 +17,6 @@ def cleanup(model, tokenizer):
     # Free GPU memory
     torch.cuda.empty_cache()
     gc.collect()
-
 
 def LLama_risk_prob(output, tokenizer):
     # Step 1 - Get the probability distribution at the first generated token
@@ -48,17 +42,32 @@ def LLama_risk_prob(output, tokenizer):
 
 def LlamaGuardSetup():
     model_id = "meta-llama/Llama-Guard-3-1B"
-    login(userdata.get('Llama-Guard-3-1B'))
-
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
-        dtype=torch.bfloat16,
         device_map="auto",
+        dtype=torch.bfloat16,
     )
     tokenizer = AutoTokenizer.from_pretrained(model_id)
-
     return model, tokenizer
 
+def GraniteGuardianSetup():
+    model_path = "ibm-granite/granite-guardian-3.1-2b"
+    model = AutoModelForCausalLM.from_pretrained(
+        model_path,
+        device_map="auto",
+        dtype=torch.bfloat16
+    )
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    return model, tokenizer
+
+def ShieldGemmaSetup():
+    tokenizer = AutoTokenizer.from_pretrained("google/shieldgemma-2b")
+    model = AutoModelForCausalLM.from_pretrained(
+        "google/shieldgemma-2b",
+        device_map="auto",
+        dtype=torch.bfloat16,
+    )
+    return model, tokenizer
 
 def LlamaGuard3_1B(prompt, model, tokenizer):
     conversation = [
@@ -114,7 +123,6 @@ def parse_output(output, input_len, nlogprobs, tokenizer, safe_token, unsafe_tok
     label, prob_of_risk = None, None
 
     if nlogprobs > 0:
-
         list_index_logprobs_i = [torch.topk(token_i, k=nlogprobs, largest=True, sorted=True)
                                  for token_i in list(output.scores)[:-1]]
         if list_index_logprobs_i is not None:
@@ -128,9 +136,7 @@ def parse_output(output, input_len, nlogprobs, tokenizer, safe_token, unsafe_tok
         label = safe_token
     else:
         label = "Failed"
-
     return label, prob_of_risk.item()
-
 
 def get_probabilities(logprobs, tokenizer, safe_token, unsafe_token):
     safe_token_prob = 1e-50
@@ -146,20 +152,7 @@ def get_probabilities(logprobs, tokenizer, safe_token, unsafe_token):
     probabilities = torch.softmax(
         torch.tensor([math.log(safe_token_prob), math.log(unsafe_token_prob)]), dim=0
     )
-
     return probabilities
-
-
-def GraniteGuardianSetup():
-    model_path = "ibm-granite/granite-guardian-3.1-2b"
-    model = AutoModelForCausalLM.from_pretrained(
-        model_path,
-        device_map="auto",
-        dtype=torch.bfloat16
-    )
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    return model, tokenizer
-
 
 def GraniteGuardian(role, prompt, model, tokenizer):
     safe_token = "No"
@@ -192,17 +185,6 @@ def GraniteGuardian(role, prompt, model, tokenizer):
     # print(f"Probability of risk: {prob_of_risk:.3f}")
     # cleanup(model, tokenizer)
     return output, prob_of_risk
-
-
-def ShieldGemmaSetup():
-    tokenizer = AutoTokenizer.from_pretrained("google/shieldgemma-2b")
-    model = AutoModelForCausalLM.from_pretrained(
-        "google/shieldgemma-2b",
-        device_map="auto",
-        dtype=torch.bfloat16,
-    )
-    return model, tokenizer
-
 
 def ShieldGemma(prompt, model, tokenizer):
     policies = {
@@ -254,9 +236,7 @@ def ShieldGemmaInference(user_prompt, model, tokenizer, safety_policy):
     # Return probability of 'Yes'
     score = probabilities[0].item()
     # print(score)  # 0.7310585379600525
-
     return score
-
 
 '''
 def WildGuardSetup():
@@ -296,7 +276,6 @@ def WildGuard(model, tokenizer, prompt):    # 17min
   # Response refusal: yes
   # Harmful response: no
 '''
-
 
 def main():
     '''
