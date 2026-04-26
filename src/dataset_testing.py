@@ -5,7 +5,7 @@ import pandas as pd
 import json
 import guardrail_models
 #from datasets.PolyGuard.social_media.guardrail_model import guardrail
-from src import guardrail_models
+import guardrail_models
 
 # Patient Safety Bench (from HuggingFace)
 PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
