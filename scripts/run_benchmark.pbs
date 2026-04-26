@@ -17,6 +17,7 @@ source envs/llm-env/bin/activate
 # Select the working directory
 cd "$PBS_O_WORKDIR" # go to the directory where qsub was run # Compile and run
 
-python3 src/main.py
+mkdir -p logs # Create logs folder for live checking of job
 
+python3 -u src/main.py &> logs/runtime.log
 
