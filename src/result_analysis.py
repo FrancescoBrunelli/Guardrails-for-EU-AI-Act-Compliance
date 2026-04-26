@@ -1,0 +1,121 @@
+import os
+import pandas as pd
+import json
+from itertools import combinations
+
+models = ["LlamaGuard", "GraniteGuardian", "ShieldGemma"]
+datasets = ["MedSafetyBench", "XSTest"]
+
+def init():
+    print("Initializing...")
+    for dataset in datasets:
+        file_name = f"test_{dataset}_score_results"
+        open(f"results/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
+    return
+
+def division(num, den):
+    return num / den if den != 0 else None
+
+def analyzeAll():
+    print("Analyzing all models singularly")
+    for dataset in datasets:
+        file_name = f"test_{dataset}_score_results"
+        with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
+            results = [json.loads(line) for line in f if line.strip()]      #Due to the fact that the file contains a json object per line, instead of a single json
+        for model in models:
+            analyze(dataset, results, model)
+    print("End analysis")
+    return
+
+def analyze(dataset, results, model, models_combined = 1, logic = None):
+    file_name = f"test_{dataset}_score_results"
+    TP = 0
+    TN = 0
+    FP = 0
+    FN = 0
+    for i in range(len(results)):
+        if (results[i][f"{model}Output"] == "safe" and results[i]["Ground_truth"] == "safe"):
+            TN += 1
+        elif (results[i][f"{model}Output"] == "unsafe" and results[i]["Ground_truth"] == "unsafe"):
+            TP += 1
+        elif (results[i][f"{model}Output"] == "safe" and results[i]["Ground_truth"] == "unsafe"):
+            FN += 1
+        else:
+            FP += 1
+    accuracy = division((TP + TN), (TP + TN + FP + FN))
+    specificity = division(TN, (TN + FP))
+    precision = division(TP, (TP + FP))
+    recall = division(TP, (TP + FN))
+    F1Score = division((2 * (precision * recall)), (precision + recall)) if (
+                precision is not None and recall is not None) else None
+    FPR = division(FP, (FP + TN))  # False Positives Rate: the lower, the better
+    FNR = division(FN, (FN + TP))  # False Negatives Rate: the lower, the better
+
+    # The Matthews Correlation Coefficient (MCC) is a measure of the quality of binary classifications in the range of [-1, +1].
+    # An MCC of +1 indicates perfect predictions, 0 indicates no better than random guessing, and -1 indicates total disagreement between predictions and true outcomes
+    MCC_den = ((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN)) ** 0.5
+    MCC = division((TP * TN) - (FP * FN), MCC_den)
+
+    result = {"Model": model, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
+              "Total_predictions": len(results), "TP": TP, "TN": TN, "FP": FP,
+              "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
+              "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
+    with open(f"results/{file_name}.json", "a") as f:
+        json.dump(result, f)
+        f.write("\n")
+
+def combine(combo, dataset, logic):
+    results = {}
+    model_name = "_".join(combo)
+
+    with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
+        data = [json.loads(line) for line in f if line.strip()]  # Due to the fact that the file contains a json object per line, instead of a single json
+
+    if logic == "AND":
+        for i in range(len(data)):
+            output = "unsafe"
+            for model in combo:
+                if data[i][f"{model}Output"] == "safe":
+                    output = "safe"
+                    break
+            results[i] = {"Models_combined": len(combo), "Logic": 'AND', "Ground_truth": data[i]["Ground_truth"],
+                          f"{model_name}Output": output}
+            # By doing so we adopt an AND logic: at least a safe to label the prompt as safe -> more permissive
+    elif logic == "OR":
+        for i in range(len(data)):
+            output = "safe"
+            for model in combo:
+                if data[i][f"{model}Output"] == "unsafe":
+                    output = "unsafe"
+                    break
+            results[i] = {"Models_combined": len(combo), "Logic": 'OR', "Ground_truth": data[i]["Ground_truth"],
+                          f"{model_name}Output": output}
+            # By doing so we adopt an OR logic: at least an unsafe to label the prompt as unsafe -> more restrictive
+
+    #print(results[i])
+    return results, model_name
+
+def analyze_combinations():
+    print("Analyzing all combinations")
+    for dataset in datasets:
+        for r in range(2, len(models) + 1):
+            for combo in combinations(models, r):
+                combo = list(combo)
+                results, model_name = combine(combo, dataset, 'OR')
+                analyze(dataset, results, model_name, len(combo), 'OR')
+
+                results, model_name = combine(combo, dataset, 'AND')
+                analyze(dataset, results, model_name, len(combo), 'AND')
+    print("End analysis")
+    return
+
+def main():
+    init()
+
+    analyzeAll()
+
+    analyze_combinations()
+
+    return
+
+main()
