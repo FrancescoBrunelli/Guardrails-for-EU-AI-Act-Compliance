@@ -9,7 +9,7 @@ datasets = ["MedSafetyBench", "XSTest"]
 def init():
     print("Initializing...")
     for dataset in datasets:
-        file_name = f"test_{dataset}_score_results"
+        file_name = f"{dataset}_score_results"
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
     return
 
@@ -19,7 +19,6 @@ def division(num, den):
 def analyzeAll():
     print("Analyzing all models singularly")
     for dataset in datasets:
-        file_name = f"test_{dataset}_score_results"
         with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
             results = [json.loads(line) for line in f if line.strip()]      #Due to the fact that the file contains a json object per line, instead of a single json
         for model in models:
@@ -28,7 +27,7 @@ def analyzeAll():
     return
 
 def analyze(dataset, results, model, models_combined = 1, logic = None):
-    file_name = f"test_{dataset}_score_results"
+    file_name = f"{dataset}_score_results"
     TP = 0
     TN = 0
     FP = 0
