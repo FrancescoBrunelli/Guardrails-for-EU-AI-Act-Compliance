@@ -30,7 +30,7 @@ models = {
 
 def MedSafetyBench():
     # Merge test datasets into one single dataset
-    path = "/content/med-safety-bench/datasets/test/gpt4"
+    path = "/datasets/med-safety-bench/datasets/test/gpt4"
     msb = []
     file_list = os.listdir(path)
 
