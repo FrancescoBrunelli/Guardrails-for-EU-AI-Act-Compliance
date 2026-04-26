@@ -114,7 +114,6 @@ def main():
     analyzeAll()
 
     analyze_combinations()
-
     return
 
 main()
