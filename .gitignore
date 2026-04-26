@@ -16,4 +16,5 @@ env/
 # Folders
 datasets/
 logs/
+src/__pycache__/
 
