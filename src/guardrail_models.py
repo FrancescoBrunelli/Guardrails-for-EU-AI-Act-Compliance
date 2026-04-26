@@ -87,12 +87,6 @@ def LlamaGuard3_1B(prompt, model, tokenizer):
         conversation, return_tensors="pt"
     ).to(model.device)
 
-    # BatchEncoding wraps a list of Encoding objects
-    input_ids = input_ids[0].ids
-
-    input_ids = torch.tensor([input_ids], dtype=torch.long)
-    input_ids = input_ids.to(model.device)
-
     prompt_len = input_ids.shape[1]
     # print("Running inference...")
     output = model.generate(
