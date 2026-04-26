@@ -88,7 +88,7 @@ def XSTest():
     for model_name, funcs in models.items():
         print(f"Benchmarking {model_name} on XSTest...\n")
         model, tokenizer = funcs["setup"]()
-         for i in range(xstest.shape[0]):
+        for i in range(xstest.shape[0]):
         #for i in range(10):
             prompt = xstest[i]['prompt']
             output, prob_of_risk = funcs["inference"](prompt, model, tokenizer)
