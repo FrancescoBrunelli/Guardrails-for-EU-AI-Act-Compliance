@@ -3,7 +3,8 @@ import pandas as pd
 import json
 from itertools import combinations
 
-models = ["LlamaGuard", "GraniteGuardian", "ShieldGemma"]
+models = {"LlamaGuard1B": "LG1B", "GraniteGuardian2B": "GG2B", "ShieldGemma2B": "SG2B"}
+#models = {"LlamaGuard": "LG1B", "GraniteGuardian": "GG2B", "ShieldGemma": "SG2B"}
 datasets = ["MedSafetyBench", "XSTest"]
 
 def init():
@@ -22,11 +23,11 @@ def analyzeAll():
         with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
             results = [json.loads(line) for line in f if line.strip()]      #Due to the fact that the file contains a json object per line, instead of a single json
         for model in models:
-            analyze(dataset, results, model)
+            analyze(dataset, results, model, models[model])
     print("End analysis")
     return
 
-def analyze(dataset, results, model, models_combined = 1, logic = None):
+def analyze(dataset, results, model, short_name, models_combined = 1, logic = None):
     file_name = f"{dataset}_score_results"
     TP = 0
     TN = 0
@@ -55,7 +56,8 @@ def analyze(dataset, results, model, models_combined = 1, logic = None):
     MCC_den = ((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN)) ** 0.5
     MCC = division((TP * TN) - (FP * FN), MCC_den)
 
-    result = {"Model": model, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
+    # models[model] takes the corresponding abbreviation
+    result = {"Model": short_name, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
               "Total_predictions": len(results), "TP": TP, "TN": TN, "FP": FP,
               "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
               "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
@@ -66,6 +68,7 @@ def analyze(dataset, results, model, models_combined = 1, logic = None):
 def combine(combo, dataset, logic):
     results = {}
     model_name = "_".join(combo)
+    short_name = "/".join(models[m] for m in combo)
 
     with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
         data = [json.loads(line) for line in f if line.strip()]  # Due to the fact that the file contains a json object per line, instead of a single json
@@ -92,7 +95,7 @@ def combine(combo, dataset, logic):
             # By doing so we adopt an OR logic: at least an unsafe to label the prompt as unsafe -> more restrictive
 
     #print(results[i])
-    return results, model_name
+    return results, model_name, short_name
 
 def analyze_combinations():
     print("Analyzing all combinations")
@@ -100,11 +103,11 @@ def analyze_combinations():
         for r in range(2, len(models) + 1):
             for combo in combinations(models, r):
                 combo = list(combo)
-                results, model_name = combine(combo, dataset, 'OR')
-                analyze(dataset, results, model_name, len(combo), 'OR')
+                results, model_name, short_name = combine(combo, dataset, 'OR')
+                analyze(dataset, results, model_name, short_name, len(combo), 'OR')
 
-                results, model_name = combine(combo, dataset, 'AND')
-                analyze(dataset, results, model_name, len(combo), 'AND')
+                results, model_name, short_name = combine(combo, dataset, 'AND')
+                analyze(dataset, results, model_name, short_name, len(combo), 'AND')
     print("End analysis")
     return
 
