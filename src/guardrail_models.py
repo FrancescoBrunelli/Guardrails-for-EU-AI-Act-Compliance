@@ -259,7 +259,7 @@ def WildGuard(prompt, model, tokenizer):    # 17min
   """
 
   model_input = instruction_format.format(prompt = prompt)
-  tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False)
+  tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False).to(model.device)
   result = model.generate(**tokenized_input, max_new_tokens=32)
 
   print(tokenizer.decode(result[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
