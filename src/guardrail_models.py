@@ -274,9 +274,16 @@ def WildGuard7B(prompt, model, tokenizer):    # 17min
     top_token = tokenizer.decode(score[0].argmax())
     print(f"Position {i}: '{top_token}'")
   '''
+  prompt_len = len(tokenized_input['input_ids'][0])
+  decoded = tokenizer.decode(result.sequences[0][prompt_len:], skip_special_tokens=True)
+  label = "unsafe" if "yes" in decoded.split("\n")[0].lower() else "safe"
   prob_risk = WildGuard_risk_prob(result, tokenizer)
 
-  print(tokenizer.decode(result[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
+  #print(tokenizer.decode(result.sequences[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
+
+  print(label)
+  print (prob_risk)
+  return label, prob_risk
 
   ### Example output:
   # print(tokenizer.decode(result[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
