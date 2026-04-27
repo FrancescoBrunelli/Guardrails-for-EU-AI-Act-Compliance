@@ -268,7 +268,7 @@ def WildGuard(prompt, model, tokenizer):    # 17min
 
   model_input = instruction_format.format(prompt = prompt)
   tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False).to(model.device)
-  result = model.generate(**tokenized_input, max_new_tokens=32)
+  result = model.generate(**tokenized_input, max_new_tokens=32, output_scores=True, return_dict_in_generate=True)
 
   for i, score in enumerate(result.scores):
       top_token = tokenizer.decode(score[0].argmax())
