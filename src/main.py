@@ -15,7 +15,11 @@ def main():
     print("Starting benchmarks...")
 
     if input_dataset == "Test":
+        print("Starting Test")
+
         guardrail_models.main()
+        
+        print("Test ended")
         return
     elif input_dataset not in datasets:
         print("Input dataset not supported")
