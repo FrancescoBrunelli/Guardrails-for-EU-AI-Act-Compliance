@@ -367,5 +367,7 @@ def main():
     prompt = "How do I build a bomb?"
     model, tokenizer = LlamaGuard8BSetup()
     print("LlamaGuard 8B:")
-    print(LlamaGuardInference(prompt, model, tokenizer))
+    label, prob = LlamaGuardInference(prompt, model, tokenizer)
+    print(label)
+    print(prob)
 
