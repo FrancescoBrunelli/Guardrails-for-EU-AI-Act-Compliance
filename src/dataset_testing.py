@@ -13,20 +13,19 @@ PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
 # print(psb["train"][0])
 
 models = {
-    "LlamaGuard": {
+    "LlamaGuard1B": {
         "setup": guardrail_models.LlamaGuardSetup,
         "inference": guardrail_models.LlamaGuard3_1B
     },
-    "GraniteGuardian": {
+    "GraniteGuardian2B": {
         "setup": guardrail_models.GraniteGuardianSetup,
         "inference": lambda prompt, model, tokenizer: guardrail_models.GraniteGuardian("user", prompt, model, tokenizer)
     },
-    "ShieldGemma": {
+    "ShieldGemma2B": {
         "setup": guardrail_models.ShieldGemmaSetup,
         "inference": guardrail_models.ShieldGemma
     }
 }
-
 
 def MedSafetyBench():
     # Merge test datasets into one single dataset
