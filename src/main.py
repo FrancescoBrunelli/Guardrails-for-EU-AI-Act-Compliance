@@ -8,15 +8,21 @@ def benchmarkAll():
     dataset_testing.XSTest()
     return
 
-datasets = {"XSTest": dataset_testing.XSTest, "MedSafetyBench": dataset_testing.MedSafetyBench, "All": benchmarkAll}
+datasets = {"XSTest": dataset_testing.XSTest, "MedSafetyBench": dataset_testing.MedSafetyBench, "All": benchmarkAll, "Test": None}
 
 def main():
     input_dataset = sys.argv[1]
     print("Starting benchmarks...")
 
-    datasets[input_dataset]()
-
+    if input_dataset == "Test":
+        guardrail_models.main()
+        return
+    elif input_dataset not in datasets:
+        print("Input dataset not supported")
+    else: datasets[input_dataset]()
 
     print("End")
+
+    return
 
 main()

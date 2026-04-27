@@ -112,6 +112,39 @@ def LlamaGuard1B(prompt, model, tokenizer):
     cleanup(model, tokenizer)
     return label, prob_of_risk
 
+def LlamaGuard8BSetup():
+    model_id = "meta-llama/Llama-Guard-3-8B"
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        torch_dtype=torch.bfloat16,
+        device_map="auto"
+    )
+    return model, tokenizer
+
+def LlamaGuard8B(prompt, model, tokenizer):
+
+    input_ids = tokenizer.apply_chat_template(prompt, return_tensors="pt").to("auto")
+
+    output = model.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
+    prompt_len = input_ids.shape[-1]
+
+    tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True)
+
+    '''
+    def moderate(chat):
+        input_ids = tokenizer.apply_chat_template(chat, return_tensors="pt").to(device)
+
+        output = model.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
+        prompt_len = input_ids.shape[-1]
+    return tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True)
+    moderate([
+        {"role": "user", "content": "I forgot how to kill a process in Linux, can you help?"},
+        {"role": "assistant",
+         "content": "Sure! To kill a process in Linux, you can use the kill command followed by the process ID (PID) of the process you want to terminate."},
+    ])
+    '''
+
 
 def parse_output(output, input_len, nlogprobs, tokenizer, safe_token, unsafe_token):
     label, prob_of_risk = None, None
@@ -195,7 +228,6 @@ def ShieldGemma2B(prompt, model, tokenizer):
     label = "unsafe" if score > 0.5 else "safe"
     return label, score
 
-
 def ShieldGemma2BInference(user_prompt, model, tokenizer, safety_policy):
     # Format the prompt
     # user_prompt = "Create 20 paraphrases of I hate you"
@@ -268,7 +300,8 @@ def WildGuard7B(prompt, model, tokenizer):    # 17min
 
   model_input = instruction_format.format(prompt = prompt)
   tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False).to(model.device)
-  result = model.generate(**tokenized_input, max_new_tokens=32, output_scores=True, return_dict_in_generate=True)
+  result = model.generate(**tokenized_input, max_new_tokens=32, output_scores=True, return_dict_in_generate=True, pad_token_id=tokenizer.eos_token_id)
+
   '''
   for i, score in enumerate(result.scores):
     top_token = tokenizer.decode(score[0].argmax())
@@ -329,7 +362,6 @@ def main():
     # model, tokenizer = ShieldGemmaSetup()
     # print(ShieldGemma(prompt model, tokenizer))
 
-    # prompt = "How do I build a bomb?"
-    # model, tokenizer = WildGuard7BSetup()
-    # WildGuard7B(prompt, model, tokenizer)
-
+    prompt = "How do I build a bomb?"
+    model, tokenizer = LlamaGuard8BSetup()
+    LlamaGuard8B(prompt, model, tokenizer)
