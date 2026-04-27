@@ -18,7 +18,7 @@ def main():
         print("Starting Test")
 
         guardrail_models.main()
-        
+
         print("Test ended")
         return
     elif input_dataset not in datasets:
