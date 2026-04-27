@@ -232,7 +232,6 @@ def ShieldGemma2BInference(user_prompt, model, tokenizer, safety_policy):
     # print(score)  # 0.7310585379600525
     return score
 
-
 def WildGuardSetup():
   model_id = "allenai/wildguard"
 
@@ -244,6 +243,15 @@ def WildGuardSetup():
   tokenizer = AutoTokenizer.from_pretrained(model_id)
 
   return model, tokenizer
+
+def WildGuard_risk_prob(output, tokenizer):
+    scores = output.scores[3][0]
+    probs = softmax(scores, dim=0)
+    yes_id = tokenizer.convert_tokens_to_ids(["Yes"])
+    no_id = tokenizer.convert_tokens_to_ids(["No"])
+    p_yes = probs[yes_id].item()
+    p_no = probs[no_id].item()
+    return p_yes / (p_yes + p_no)
 
 def WildGuard(prompt, model, tokenizer):    # 17min
   instruction_format = """<s><|user|>
@@ -261,6 +269,12 @@ def WildGuard(prompt, model, tokenizer):    # 17min
   model_input = instruction_format.format(prompt = prompt)
   tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False).to(model.device)
   result = model.generate(**tokenized_input, max_new_tokens=32)
+
+  for i, score in enumerate(result.scores):
+      top_token = tokenizer.decode(score[0].argmax())
+      print(f"Position {i}: '{top_token}'")
+
+  prob_risk = WildGuard_risk_prob(result, tokenizer)
 
   print(tokenizer.decode(result[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
 
