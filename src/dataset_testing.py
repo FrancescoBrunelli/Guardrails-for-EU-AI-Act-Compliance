@@ -24,6 +24,10 @@ models = {
     "ShieldGemma2B": {
         "setup": guardrail_models.ShieldGemma2BSetup,
         "inference": guardrail_models.ShieldGemma2B
+    },
+    "WildGuard7B": {
+        "setup":guardrail_models.WildGuard7BSetup,
+        "inference": guardrail_models.WildGuard7B
     }
 }
 
