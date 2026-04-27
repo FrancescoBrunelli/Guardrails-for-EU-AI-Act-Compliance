@@ -3,7 +3,7 @@ import pandas as pd
 import json
 from itertools import combinations
 
-models = {"LlamaGuard1B": "LG1B", "GraniteGuardian2B": "GG2B", "ShieldGemma2B": "SG2B"}
+models = {"LlamaGuard1B": "LG1B", "GraniteGuardian2B": "GG2B", "ShieldGemma2B": "SG2B", "WildGuard": "WG7B"}
 #models = {"LlamaGuard": "LG1B", "GraniteGuardian": "GG2B", "ShieldGemma": "SG2B"}
 datasets = ["MedSafetyBench", "XSTest"]
 
