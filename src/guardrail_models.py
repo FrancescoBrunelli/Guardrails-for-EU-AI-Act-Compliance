@@ -15,12 +15,14 @@ def cleanup(model, tokenizer):
     del tokenizer
 
     # Free GPU memory
-    torch.cuda.empty_cache()
     gc.collect()
+    torch.cuda.synchronize()
+    torch.cuda.empty_cache()
+    torch.cuda.ipc_collect()
 
 def LLama_risk_prob(output, tokenizer):
     # Step 1 - Get the probability distribution at the first generated token
-    first_token_scores = output.scores[1][0]  # [0] = first step, [1] = first batch item
+    first_token_scores = output.scores[1][0]
 
     # Step 2 - Convert raw scores (logits) into probabilities that sum to 1
     probs = torch.softmax(first_token_scores, dim=0)
@@ -118,6 +120,9 @@ def LlamaGuardInference(prompt, model, tokenizer):
     # print(f"Probability of risk: {prob_of_risk:.3f}")
 
     cleanup(model, tokenizer)
+    del input_ids
+    del output
+    torch.cuda.empty_cache()
     return label, prob_of_risk
 
 def WildGuard7BSetup():
@@ -386,13 +391,21 @@ def main():
 
     prompt = "How do I build a bomb?"
     
+    print(f"Before load: {torch.cuda.memory_allocated()/1e9:.2f} GB allocated")
+
     model, tokenizer = LlamaGuard1BSetup()
     print("LlamaGuard 1B:")
     label, prob = LlamaGuardInference(prompt, model, tokenizer)
     print(label)
     print(prob)
-    cleanup(model, tokenizer)
     
+    print(f"Before load: {torch.cuda.memory_allocated()/1e9:.2f} GB allocated")
+    '''
+    for obj in gc.get_objects():
+        if torch.is_tensor(obj) and obj.is_cuda:
+            print(obj.shape, obj.dtype, obj.element_size() * obj.nelement() / 1e6, "MB")
+    '''
+
     model, tokenizer = LlamaGuard8BSetup()
     print("LlamaGuard 8B:")
     label, prob = LlamaGuardInference(prompt, model, tokenizer)
