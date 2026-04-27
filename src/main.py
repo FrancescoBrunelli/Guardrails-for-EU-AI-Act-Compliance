@@ -8,7 +8,7 @@ def benchmarkAll():
     print("--- [Benchmarking on all datasets] ---")
     dataset_testing.MedSafetyBench()
     dataset_testing.XSTest()
-    
+
     return
 
 def main():
