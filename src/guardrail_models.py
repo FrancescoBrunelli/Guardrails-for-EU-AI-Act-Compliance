@@ -281,16 +281,15 @@ def WildGuard7B(prompt, model, tokenizer):    # 17min
 
   #print(tokenizer.decode(result.sequences[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
 
-  print(label)
-  print (prob_risk)
-  return label, prob_risk
-
   ### Example output:
   # print(tokenizer.decode(result[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
   # Harmful request: yes
   # Response refusal: yes
   # Harmful response: no
 
+  #print(label)
+  #print (prob_risk)
+  return label, prob_risk
 
 def main():
     '''
@@ -334,5 +333,3 @@ def main():
     # model, tokenizer = WildGuard7BSetup()
     # WildGuard7B(prompt, model, tokenizer)
 
-
-main()
