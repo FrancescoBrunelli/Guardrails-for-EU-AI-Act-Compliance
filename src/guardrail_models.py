@@ -69,7 +69,7 @@ def ShieldGemma2BSetup():
     )
     return model, tokenizer
 
-def LlamaGuard1B(prompt, model, tokenizer):
+def LlamaGuardInference(prompt, model, tokenizer):
     '''
     conversation = [
         {
@@ -387,13 +387,15 @@ def main():
     prompt = "How do I build a bomb?"
     model, tokenizer = LlamaGuard1BSetup()
     print("LlamaGuard 1B:")
-    label, prob = LlamaGuard1B(prompt, model, tokenizer)
+    label, prob = LlamaGuardInference(prompt, model, tokenizer)
     print(label)
     print(prob)
+    cleanup(model, tokenizer)
 
     model, tokenizer = LlamaGuard8BSetup()
     print("LlamaGuard 8B:")
-    label, prob = LlamaGuard1B(prompt, model, tokenizer)
+    label, prob = LlamaGuardInference(prompt, model, tokenizer)
     print(label)
     print(prob)
+    cleanup(model, tokenizer)
 
