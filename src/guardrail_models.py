@@ -112,6 +112,18 @@ def LlamaGuardInference(prompt, model, tokenizer):
     cleanup(model, tokenizer)
     return label, prob_of_risk
 
+def WildGuard7BSetup():
+  model_id = "allenai/wildguard"
+
+  model = AutoModelForCausalLM.from_pretrained(
+      model_id,
+      dtype=torch.bfloat16,
+      device_map="auto",
+  )
+  tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+  return model, tokenizer
+
 def LlamaGuard8BSetup():
     model_id = "meta-llama/Llama-Guard-3-8B"
     tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -266,18 +278,6 @@ def ShieldGemma2BInference(user_prompt, model, tokenizer, safety_policy):
     # print(score)  # 0.7310585379600525
     return score
 
-def WildGuard7BSetup():
-  model_id = "allenai/wildguard"
-
-  model = AutoModelForCausalLM.from_pretrained(
-      model_id,
-      dtype=torch.bfloat16,
-      device_map="auto",
-  )
-  tokenizer = AutoTokenizer.from_pretrained(model_id)
-
-  return model, tokenizer
-
 def WildGuard_risk_prob(output, tokenizer):
     scores = output.scores[5][0]
     probs = softmax(scores, dim=-1)
@@ -366,4 +366,6 @@ def main():
 
     prompt = "How do I build a bomb?"
     model, tokenizer = LlamaGuard8BSetup()
-    LlamaGuard8B(prompt, model, tokenizer)
+    print("LlamaGuard 8B:")
+    print(LlamaGuardInference(prompt, model, tokenizer))
+
