@@ -69,7 +69,7 @@ def ShieldGemma2BSetup():
     )
     return model, tokenizer
 
-def LlamaGuard1B(prompt, model, tokenizer):
+def LlamaGuardInference(prompt, model, tokenizer):
     conversation = [
         {
             "role": "user",
@@ -117,11 +117,12 @@ def LlamaGuard8BSetup():
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
-        torch_dtype=torch.bfloat16,
+        dtype=torch.bfloat16,
         device_map="auto"
     )
     return model, tokenizer
 
+"""
 def LlamaGuard8B(prompt, model, tokenizer):
     input_ids = tokenizer.apply_chat_template(prompt, return_tensors="pt").to(model.device)
 
@@ -144,6 +145,7 @@ def LlamaGuard8B(prompt, model, tokenizer):
          "content": "Sure! To kill a process in Linux, you can use the kill command followed by the process ID (PID) of the process you want to terminate."},
     ])
     '''
+"""
 
 
 def parse_output(output, input_len, nlogprobs, tokenizer, safe_token, unsafe_token):
