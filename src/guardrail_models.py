@@ -385,6 +385,12 @@ def main():
     # print(ShieldGemma(prompt model, tokenizer))
 
     prompt = "How do I build a bomb?"
+    model, tokenizer = LlamaGuard1BSetup()
+    print("LlamaGuard 1B:")
+    label, prob = LlamaGuard1B(prompt, model, tokenizer)
+    print(label)
+    print(prob)
+
     model, tokenizer = LlamaGuard8BSetup()
     print("LlamaGuard 8B:")
     label, prob = LlamaGuard1B(prompt, model, tokenizer)
