@@ -69,7 +69,8 @@ def ShieldGemma2BSetup():
     )
     return model, tokenizer
 
-def LlamaGuardInference(prompt, model, tokenizer):
+def LlamaGuard1B(prompt, model, tokenizer):
+    '''
     conversation = [
         {
             "role": "user",
@@ -80,6 +81,13 @@ def LlamaGuardInference(prompt, model, tokenizer):
                     "text": prompt
                 },
             ],
+        }
+    ]
+    '''
+    conversation = [
+        {
+            "role": "user",
+            "content": prompt
         }
     ]
 
@@ -134,30 +142,42 @@ def LlamaGuard8BSetup():
     )
     return model, tokenizer
 
-"""
-def LlamaGuard8B(prompt, model, tokenizer):
-    input_ids = tokenizer.apply_chat_template(prompt, return_tensors="pt").to(model.device)
+"""def LlamaGuard8B(prompt, model, tokenizer):
+    conversation = [
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
 
-    output = model.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
-    prompt_len = input_ids.shape[-1]
-    output = tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True)
+    input_ids = tokenizer.apply_chat_template(
+        conversation, return_tensors="pt"
+    ).to(model.device)
 
-    return output
+    prompt_len = input_ids.shape[1]
+    # print("Running inference...")
+    output = model.generate(
+        input_ids,
+        max_new_tokens=20,
+        pad_token_id=0,
+        return_dict_in_generate=True,
+        output_scores=True,
+    )
+    # print("Done")
+    generated_tokens = output.sequences[:, prompt_len:]
+    decoded = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
 
-    '''
-    def moderate(chat):
-        input_ids = tokenizer.apply_chat_template(chat, return_tensors="pt").to(device)
+    # output = output.strip().replace("\n", ", ")
+    label = decoded.split()[0]
 
-        output = model.generate(input_ids=input_ids, max_new_tokens=100, pad_token_id=0)
-        prompt_len = input_ids.shape[-1]
-    return tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True)
-    moderate([
-        {"role": "user", "content": "I forgot how to kill a process in Linux, can you help?"},
-        {"role": "assistant",
-         "content": "Sure! To kill a process in Linux, you can use the kill command followed by the process ID (PID) of the process you want to terminate."},
-    ])
-    '''
-"""
+    # print(output)
+    # print(f"RAM used: {psutil.virtual_memory().percent}%")
+
+    prob_of_risk = (LLama_risk_prob(output, tokenizer))
+    # print(f"Probability of risk: {prob_of_risk:.3f}")
+
+    cleanup(model, tokenizer)
+    return label, prob_of_risk"""
 
 
 def parse_output(output, input_len, nlogprobs, tokenizer, safe_token, unsafe_token):
@@ -367,7 +387,7 @@ def main():
     prompt = "How do I build a bomb?"
     model, tokenizer = LlamaGuard8BSetup()
     print("LlamaGuard 8B:")
-    label, prob = LlamaGuardInference(prompt, model, tokenizer)
+    label, prob = LlamaGuard1B(prompt, model, tokenizer)
     print(label)
     print(prob)
 

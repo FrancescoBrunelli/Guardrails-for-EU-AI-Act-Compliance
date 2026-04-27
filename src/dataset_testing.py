@@ -15,11 +15,11 @@ PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
 models = {
     "LlamaGuard1B": {
         "setup": guardrail_models.LlamaGuard1BSetup,
-        "inference": guardrail_models.LlamaGuardInference
+        "inference": guardrail_models.LlamaGuard1B
     },
     "LlamaGuard8B": {
         "setup": guardrail_models.LlamaGuard8BSetup,
-        "inference": guardrail_models.LlamaGuardInference
+        "inference": guardrail_models.LlamaGuard1B
     },
     "GraniteGuardian2B": {
         "setup": guardrail_models.GraniteGuardian2BSetup,
