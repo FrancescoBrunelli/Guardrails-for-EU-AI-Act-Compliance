@@ -5,6 +5,7 @@ import warnings
 import os
 import math
 import gc
+import time
 
 warnings.filterwarnings('ignore')
 os.environ["VLLM_LOGGING_LEVEL"] = "ERROR"
@@ -407,8 +408,10 @@ def main():
     label, prob = ShieldGemma2B(prompt, model, tokenizer)
     print(label)
     print(prob)
-
+    
     print(f"Before load: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
+    time.sleep(5) # Wait 5 seconds
+    print(f"After 5s: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
     model, tokenizer = GraniteGuardian2BSetup()
     print("GraniteGuardian 2B:")
     label, prob = GraniteGuardian2B("user", prompt, model, tokenizer)
