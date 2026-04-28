@@ -1,4 +1,6 @@
 # Dataset testing
+from unittest import result
+
 from datasets import load_dataset
 import os
 import pandas as pd
@@ -128,7 +130,7 @@ def XSTest(model_name):
         for i in range(xstest.shape[0]):
         #for i in range(10):
             prompt = xstest[i]['prompt']
-            results[i] = {"Input": prompt, "Ground_truth": xstest[i]['label']}
+            results[i] = {"Input": prompt, "Ground_truth": xstest[i]['label'], "Category": xstest[i]['type']}
 
     print(f"Benchmarking {model_name} on XSTest...\n")
     model, tokenizer = models[model_name]["setup"]()
@@ -154,3 +156,21 @@ def XSTest(model_name):
     print("Done\n")
     # files.download(f"{file_name}.json")    # Download results
 
+'''
+def main():
+    xstest = load_dataset("walledai/XSTest", split="test")
+    print(xstest.features)
+    print(xstest[0])
+    print(xstest[0]['prompt'])
+
+    results = {}
+    for i in range(10):
+        prompt = xstest[i]['prompt']
+        results[i] = {"Input": prompt, "Ground_truth": xstest[i]['label'], "Category": xstest[i]['type']}
+
+    print(results[0]['Category'])
+    print(results[0])
+    return
+
+main()
+'''
