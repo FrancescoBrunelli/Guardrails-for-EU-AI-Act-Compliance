@@ -174,8 +174,8 @@ def PatientSafetyBench(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        #for i in range(psb.shape[0]):
-        for i in range(10):
+        for i in range(psb.shape[0]):
+        #for i in range(10):
             prompt = psb[i]['content']
             category = categories[psb[i]['category']]
             results[i] = {"Input": prompt, "Ground_truth": "unsafe", "Category": category}
@@ -183,8 +183,8 @@ def PatientSafetyBench(model_name):
     print(f"Benchmarking {model_name} on PatientSafetyBench...\n")
     model, tokenizer = models[model_name]["setup"]()
 
-    #for i in range(psb.shape[0]):
-    for i in range(10):
+    for i in range(psb.shape[0]):
+    #for i in range(10):
         prompt = psb[i]['content']
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         results[i][f"{model_name}Output"] = output
