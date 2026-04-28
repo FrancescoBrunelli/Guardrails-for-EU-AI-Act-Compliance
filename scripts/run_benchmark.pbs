@@ -8,7 +8,7 @@
 # Queue name
 #PBS -q shortGPUQ
 # Set the maximum wall time
-#PBS -l walltime=07:58:00
+#PBS -l walltime=00:58:00
 # Set the memory cpus and resources
 #PBS -l select=1:ncpus=28:ngpus=1:mem=256gb
 
@@ -19,5 +19,5 @@ cd "$PBS_O_WORKDIR" # go to the directory where qsub was run # Compile and run
 
 mkdir -p logs # Create logs folder for live checking of job
 
-python3 -u src/main.py $INPUT &> logs/runtime.log
+python3 -u src/main.py $INPUT LlamaGuard1B &> logs/runtime.log
 
