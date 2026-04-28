@@ -8,7 +8,13 @@ def benchmarkAll():
     dataset_testing.XSTest()
     return
 
-datasets = {"XSTest": dataset_testing.XSTest, "MedSafetyBench": dataset_testing.MedSafetyBench, "All": benchmarkAll, "Test": None}
+datasets = {
+    "xstest": dataset_testing.XSTest,
+    "msb": dataset_testing.MedSafetyBench,
+    "psb": dataset_testing.PatientSafetyBench,
+    "All": benchmarkAll,
+    "Test": None
+}
 
 def main():
     input_dataset = sys.argv[1]
