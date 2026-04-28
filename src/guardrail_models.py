@@ -140,7 +140,8 @@ def LlamaGuard8BSetup():
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
         dtype=torch.bfloat16,
-        device_map="auto"
+        #device_map="auto"
+        device_map="cuda:0"
     )
     return model, tokenizer
 
