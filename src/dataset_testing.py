@@ -133,6 +133,11 @@ def XSTest(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+
+        # Test to delete
+        results[i][f"{model_name}Prompt"] = prompt
+        # End test to delete
+
     guardrail_models.cleanup(model, tokenizer)
 
     with open(f"results/{file_name}.json", "w") as f:
