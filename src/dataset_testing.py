@@ -1,7 +1,7 @@
 # Dataset testing
 from unittest import result
 
-from datasets import load_dataset, psb
+from datasets import load_dataset
 import os
 import pandas as pd
 import json
@@ -185,7 +185,7 @@ def PatientSafetyBench(model_name):
 
     #for i in range(psb.shape[0]):
     for i in range(10):
-        prompt = psb[i]['prompt']
+        prompt = psb[i]['content']
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)

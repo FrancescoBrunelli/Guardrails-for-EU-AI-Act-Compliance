@@ -26,6 +26,6 @@ for model in "${models[@]}"; do
   python3 -u src/main.py $INPUT $model >> logs/runtime.log 2>&1
 done
 
-#python3 -u src/main.py $INPUT LlamaGuard8B &> logs/runtime.log
+python3 -u src/main.py $INPUT LlamaGuard8B &> logs/runtime.log
 
 echo "End of PBS" >> logs/runtime.log
