@@ -8,7 +8,7 @@
 # Queue name
 #PBS -q shortGPUQ
 # Set the maximum wall time
-#PBS -l walltime=00:58:00
+#PBS -l walltime=07:58:00
 # Set the memory cpus and resources
 #PBS -l select=1:ncpus=28:ngpus=1:mem=256gb
 
