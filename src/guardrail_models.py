@@ -5,7 +5,6 @@ import warnings
 import os
 import math
 import gc
-import time
 
 warnings.filterwarnings('ignore')
 os.environ["VLLM_LOGGING_LEVEL"] = "ERROR"
@@ -119,11 +118,8 @@ def LlamaGuardInference(prompt, model, tokenizer):
 
     prob_of_risk = (LLama_risk_prob(output, tokenizer))
     # print(f"Probability of risk: {prob_of_risk:.3f}")
+    #cleanup(model, tokenizer)
 
-    cleanup(model, tokenizer)
-    del input_ids
-    del output
-    torch.cuda.empty_cache()
     return label, prob_of_risk
 
 def WildGuard7BSetup():
@@ -401,7 +397,7 @@ def main():
     print(label)
     print(prob)
     '''
-
+    """
     print(f"Before load: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
     model, tokenizer = ShieldGemma2BSetup()
     print("ShieldGemma 2B:")
@@ -409,15 +405,6 @@ def main():
     print(label)
     print(prob)
     
-    print(f"Before load: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
-    time.sleep(5) # Wait 5 seconds
-    print(f"After 5s: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
-    model, tokenizer = GraniteGuardian2BSetup()
-    print("GraniteGuardian 2B:")
-    label, prob = GraniteGuardian2B("user", prompt, model, tokenizer)
-    print(label)
-    print(prob)
-
     print(f"Before load: {torch.cuda.memory_allocated()/1e9:.2f} GB allocated")
     '''
     for obj in gc.get_objects():
@@ -430,3 +417,4 @@ def main():
     label, prob = LlamaGuardInference(prompt, model, tokenizer)
     print(label)
     print(prob)
+    """

@@ -12,6 +12,7 @@ datasets = {"XSTest": dataset_testing.XSTest, "MedSafetyBench": dataset_testing.
 
 def main():
     input_dataset = sys.argv[1]
+    input_model = sys.argv[2]
     print("Starting benchmarks...")
 
     if input_dataset == "Test":
@@ -23,7 +24,7 @@ def main():
         return
     elif input_dataset not in datasets:
         print("Input dataset not supported")
-    else: datasets[input_dataset]()
+    else: datasets[input_dataset](input_model)
 
     print("End")
 

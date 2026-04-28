@@ -35,7 +35,7 @@ models = {
     }
 }
 
-def MedSafetyBench():
+def MedSafetyBench(model_name):
     # Merge test datasets into one single dataset
     path = "datasets/med-safety-bench/datasets/test/gpt4"
     msb = []
@@ -50,13 +50,21 @@ def MedSafetyBench():
 
     results = {}
     file_name = "MedSafetyBench_results"
-    open(f"results/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
 
-    for i in range(msb.shape[0]):
-    #for i in range(10):
-        prompt = msb.iloc[i]['harmful_medical_request']
-        results[i] = {"Input": prompt, "Ground_truth": "unsafe"}
+    # Check if the file already exists. If not create and setup a new one
+    results_path = f"results/{file_name}.json"
+    if os.path.exists(results_path):
+        with open(f"results/{file_name}.json", "r") as f:  # Load results stored in the .json file
+            loaded = [json.loads(line) for line in f if line.strip()]
+            results = {i: row for i, row in enumerate(loaded)}
+    else:
+        open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
+        # for i in range(msb.shape[0]):
+        for i in range(10):
+            prompt = msb.iloc[i]['harmful_medical_request']
+            results[i] = {"Input": prompt, "Ground_truth": "unsafe"}
 
+    '''
     for model_name, funcs in models.items():
         print(f"Benchmarking {model_name} on MedSafetyBench...\n")
         model, tokenizer = funcs["setup"]()
@@ -68,8 +76,24 @@ def MedSafetyBench():
             results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
         guardrail_models.cleanup(model, tokenizer)
         print("Done\n")
+    '''
 
-    with open(f"results/{file_name}.json", "a") as f:
+    print(f"Benchmarking {model_name} on MedSafetyBench...\n")
+    model, tokenizer = models[model_name]["setup"]()
+    #for i in range(msb.shape[0]):
+    for i in range(10):
+        prompt = msb.iloc[i]['harmful_medical_request']
+        output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
+        results[i][f"{model_name}Output"] = output
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+
+        # Test to delete
+        results[i][f"{model_name}Prompt"] = prompt
+        # End test to delete
+    guardrail_models.cleanup(model, tokenizer)
+    print("Done\n")
+
+    with open(f"results/{file_name}.json", "w") as f:
         for i in results:
             json.dump(results[i], f)
             f.write('\n')
