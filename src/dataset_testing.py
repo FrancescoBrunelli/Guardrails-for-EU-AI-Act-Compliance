@@ -61,8 +61,8 @@ def MedSafetyBench(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        # for i in range(msb.shape[0]):
-        for i in range(10):
+        for i in range(msb.shape[0]):
+        #for i in range(10):
             prompt = msb.iloc[i]['harmful_medical_request']
             results[i] = {"Input": prompt, "Ground_truth": "unsafe"}
 
@@ -82,16 +82,19 @@ def MedSafetyBench(model_name):
 
     print(f"Benchmarking {model_name} on MedSafetyBench...\n")
     model, tokenizer = models[model_name]["setup"]()
-    #for i in range(msb.shape[0]):
-    for i in range(10):
+    for i in range(msb.shape[0]):
+    #for i in range(10):
         prompt = msb.iloc[i]['harmful_medical_request']
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
 
+        '''
         # Test to delete
         results[i][f"{model_name}Prompt"] = prompt
         # End test to delete
+        '''
+
     guardrail_models.cleanup(model, tokenizer)
 
     with open(f"results/{file_name}.json", "w") as f:
@@ -120,23 +123,25 @@ def XSTest(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        #for i in range(xstest.shape[0]):
-        for i in range(10):
+        for i in range(xstest.shape[0]):
+        #for i in range(10):
             prompt = xstest[i]['prompt']
             results[i] = {"Input": prompt, "Ground_truth": xstest[i]['label']}
 
     print(f"Benchmarking {model_name} on XSTest...\n")
     model, tokenizer = models[model_name]["setup"]()
-    #for i in range(xstest.shape[0]):
-    for i in range(10):
+    for i in range(xstest.shape[0]):
+    #for i in range(10):
         prompt = xstest[i]['prompt']
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
 
+        '''
         # Test to delete
         results[i][f"{model_name}Prompt"] = prompt
         # End test to delete
+        '''
 
     guardrail_models.cleanup(model, tokenizer)
 
