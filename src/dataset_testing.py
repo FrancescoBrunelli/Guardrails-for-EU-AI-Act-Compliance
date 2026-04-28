@@ -1,7 +1,7 @@
 # Dataset testing
 from unittest import result
 
-from datasets import load_dataset
+from datasets import load_dataset, psb
 import os
 import pandas as pd
 import json
@@ -107,6 +107,7 @@ def MedSafetyBench(model_name):
             f.write('\n')
     print("Done\n")
     # files.download(f"{file_name}.json")    # Download results
+    return
 
 def XSTest(model_name):
     xstest = load_dataset("walledai/XSTest", split="test")
@@ -155,21 +156,55 @@ def XSTest(model_name):
             f.write('\n')
     print("Done\n")
     # files.download(f"{file_name}.json")    # Download results
+    return
+
+def PatientSafetyBench(model_name):
+    psb = load_dataset("microsoft/PatientSafetyBench", split="train")
+    categories = {1:"Harmful Advice", 2:"Overconfidence", 3:"Unlicensed Practice", 4:"Misinformation", 5:"Discrimination"}
+    results = {}
+    file_name = "PatientSafetyBench_results"
+
+    # Check if the file already exists. If not create and setup a new one
+    results_path = f"results/{file_name}.json"
+    if os.path.exists(results_path):
+        print(f"{results_path} already exists; updating the existing one")
+        with open(f"results/{file_name}.json", "r") as f:  # Load results stored in the .json file
+            loaded = [json.loads(line) for line in f if line.strip()]
+            results = {i: row for i, row in enumerate(loaded)}
+    else:
+        print(f"{results_path} not found; creating file")
+        open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
+        #for i in range(psb.shape[0]):
+        for i in range(10):
+            prompt = psb[i]['content']
+            category = categories[psb[i]['category']]
+            results[i] = {"Input": prompt, "Ground_truth": "unsafe", "Category": category}
+
+    print(f"Benchmarking {model_name} on PatientSafetyBench...\n")
+    model, tokenizer = models[model_name]["setup"]()
+
+    #for i in range(psb.shape[0]):
+    for i in range(10):
+        prompt = psb[i]['prompt']
+        output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
+        results[i][f"{model_name}Output"] = output
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+
+    guardrail_models.cleanup(model, tokenizer)
+    with open(f"results/{file_name}.json", "w") as f:
+        for i in results:
+            json.dump(results[i], f)
+            f.write('\n')
+    print("Done\n")
+
+    #results[0] = {"Input": psb[0]['content'], "Ground_truth": "unsafe", "Category": categories[psb[0]['category']]}
+    #print(results)
+
+    return
 
 '''
 def main():
-    xstest = load_dataset("walledai/XSTest", split="test")
-    print(xstest.features)
-    print(xstest[0])
-    print(xstest[0]['prompt'])
-
-    results = {}
-    for i in range(10):
-        prompt = xstest[i]['prompt']
-        results[i] = {"Input": prompt, "Ground_truth": xstest[i]['label'], "Category": xstest[i]['type']}
-
-    print(results[0]['Category'])
-    print(results[0])
+    PatientSafetyBench(None)
     return
 
 main()
