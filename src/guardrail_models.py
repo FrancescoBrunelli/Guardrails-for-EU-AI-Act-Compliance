@@ -93,7 +93,44 @@ def LlamaGuard8BSetup():
     )
     return model, tokenizer
 
-def LlamaGuardInference(prompt, model, tokenizer):
+def LlamaGuard1B(prompt, model, tokenizer):
+    conversation = [
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+
+    input_ids = tokenizer.apply_chat_template(
+        conversation, return_tensors="pt"
+    ).to(model.device)
+
+    prompt_len = input_ids.shape[1]
+    # print("Running inference...")
+    output = model.generate(
+        input_ids,
+        max_new_tokens=20,
+        pad_token_id=0,
+        return_dict_in_generate=True,
+        output_scores=True
+    )
+    # print("Done")
+    generated_tokens = output.sequences[:, prompt_len:]
+    decoded = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
+
+    # output = output.strip().replace("\n", ", ")
+    label = decoded.split()[0]
+
+    # print(output)
+    # print(f"RAM used: {psutil.virtual_memory().percent}%")
+
+    prob_of_risk = (LLama_risk_prob(output, tokenizer))
+    # print(f"Probability of risk: {prob_of_risk:.3f}")
+    #cleanup(model, tokenizer)
+
+    return label, prob_of_risk
+
+def LlamaGuard8B(prompt, model, tokenizer):
     '''
     conversation = [
         {
