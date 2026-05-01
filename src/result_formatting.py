@@ -10,7 +10,7 @@ headers2 = ['Model', 'Logic', 'Accuracy', 'Specificity', 'Precision', 'Recall', 
 def create_table(filename):
     with open(f"results/{filename}.json", "r") as f:  # Load results stored in the .json file
         results = [json.loads(line) for line in f if line.strip()]  # Due to the fact that the file contains a json object per line, instead of a single json
-    print(results[0].keys())
+    #print(results[0].keys())
 
     table1 = []
     table2 = []
@@ -60,10 +60,7 @@ def extract_rows(tabulate_output):
     lines = tabulate_output.strip().split("\n")
     return "\n".join(lines[4:-2])
 
-def main():
-    #dataset = "XSTest(all_categories)"
-    dataset = "MedSafetyBench"
-    #dataset = "PatientSafetyBench(all_categories)"
+def printTables(dataset):
     table1, table2 = create_table(f"{dataset}_score_results")
     table1 = extract_rows(table1)
     table2 = extract_rows(table2)
@@ -71,6 +68,23 @@ def main():
     print(table1)
     print(f"\n\t*** Dataset: {dataset} - TABLE 2: ***\n")
     print(table2)
+    return
+
+def main():
+    datasets_single_models = ["XSTest(single)", "MedSafetyBench(single)", "PatientSafetyBench(single)"]
+    #dataset = "XSTest"
+    #dataset = "MedSafetyBench"
+    dataset = "PatientSafetyBench"
+
+    printTables(dataset)
+
+    """
+    # Print all single-models tables
+    for dataset in datasets_single_models:
+        printTables(dataset)
+    """
+
+
 
     '''
     headers = ["Uno", "Due", "Tre"]

@@ -5,10 +5,10 @@ from itertools import combinations
 
 models = {
     "LlamaGuard1B": "LG1B",
-    "LlamaGuard8B": "LG8B",
     "GraniteGuardian2B": "GG2B",
     "ShieldGemma2B": "SG2B",
-    "WildGuard7B": "WG7B"
+    "WildGuard7B": "WG7B",
+    "LlamaGuard8B": "LG8B"
 }
 #models = {"LlamaGuard": "LG1B", "GraniteGuardian": "GG2B", "ShieldGemma": "SG2B"}
 datasets = ["MedSafetyBench", "XSTest", "PatientSafetyBench"]
@@ -18,6 +18,8 @@ def init():
     for dataset in datasets:
         file_name = f"{dataset}_score_results"
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
+        file_name = f"{dataset}(single)_score_results"
+        open(f"results/{file_name}.json", "w").close()
     return
 
 def division(num, den):
@@ -32,6 +34,7 @@ def analyzeAll():
                 results = [json.loads(line) for line in f if line.strip()]      #Due to the fact that the file contains a json object per line, instead of a single json
             for model in models:
                 analyze(dataset, results, model, models[model])
+                analyze(f"{dataset}(single)", results, model, models[model])
     print("End analysis")
     return
 
