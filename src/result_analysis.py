@@ -8,10 +8,10 @@ models = {
     "LlamaGuard8B": "LG8B",
     "GraniteGuardian2B": "GG2B",
     "ShieldGemma2B": "SG2B",
-    "WildGuard": "WG7B"
+    "WildGuard7B": "WG7B"
 }
 #models = {"LlamaGuard": "LG1B", "GraniteGuardian": "GG2B", "ShieldGemma": "SG2B"}
-datasets = ["MedSafetyBench", "XSTest"]
+datasets = ["MedSafetyBench", "XSTest", "PatientSafetyBench"]
 
 def init():
     print("Initializing...")
@@ -26,10 +26,12 @@ def division(num, den):
 def analyzeAll():
     print("Analyzing all models singularly")
     for dataset in datasets:
-        with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
-            results = [json.loads(line) for line in f if line.strip()]      #Due to the fact that the file contains a json object per line, instead of a single json
-        for model in models:
-            analyze(dataset, results, model, models[model])
+        results_path = f"results/{dataset}_results.json"
+        if os.path.exists(results_path):
+            with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
+                results = [json.loads(line) for line in f if line.strip()]      #Due to the fact that the file contains a json object per line, instead of a single json
+            for model in models:
+                analyze(dataset, results, model, models[model])
     print("End analysis")
     return
 
@@ -106,14 +108,16 @@ def combine(combo, dataset, logic):
 def analyze_combinations():
     print("Analyzing all combinations")
     for dataset in datasets:
-        for r in range(2, len(models) + 1):
-            for combo in combinations(models, r):
-                combo = list(combo)
-                results, model_name, short_name = combine(combo, dataset, 'OR')
-                analyze(dataset, results, model_name, short_name, len(combo), 'OR')
+        results_path = f"results/{dataset}_results.json"
+        if os.path.exists(results_path):
+            for r in range(2, len(models) + 1):
+                for combo in combinations(models, r):
+                    combo = list(combo)
+                    results, model_name, short_name = combine(combo, dataset, 'OR')
+                    analyze(dataset, results, model_name, short_name, len(combo), 'OR')
 
-                results, model_name, short_name = combine(combo, dataset, 'AND')
-                analyze(dataset, results, model_name, short_name, len(combo), 'AND')
+                    results, model_name, short_name = combine(combo, dataset, 'AND')
+                    analyze(dataset, results, model_name, short_name, len(combo), 'AND')
     print("End analysis")
     return
 
