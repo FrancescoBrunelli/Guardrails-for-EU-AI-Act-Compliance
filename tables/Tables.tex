@@ -5,6 +5,7 @@
 \usepackage[english]{babel}
 \usepackage{longtable}
 \usepackage{booktabs}
+\usepackage{float}
 
 % Set page size and margins
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
@@ -25,49 +26,119 @@
 Your abstract.
 \end{abstract}
 
-\section{Tables}
+\section{Single Guardrail Evaluation - Tables}
 
-\begin{table}[h]
+\subsection{XSTest}
+
+\begin{table}[H]
 \centering
 \begin{tabular}{llrrrrrr}
 \toprule
  Model          & Logic   &   TP &   TN &   FP &   FN &   FPR &   FNR \\
 \midrule
- LG1B           & -       &  154 &  234 &   16 &   46 & 0.064 & 0.23  \\
- GG2B           & -       &  199 &  168 &   82 &    1 & 0.328 & 0.005 \\
- SG2B           & -       &  165 &  192 &   58 &   35 & 0.232 & 0.175 \\
- LG1B/GG2B      & OR      &  199 &  167 &   83 &    1 & 0.332 & 0.005 \\
- LG1B/GG2B      & AND     &  154 &  235 &   15 &   46 & 0.06  & 0.23  \\
- LG1B/SG2B      & OR      &  184 &  183 &   67 &   16 & 0.268 & 0.08  \\
- LG1B/SG2B      & AND     &  135 &  243 &    7 &   65 & 0.028 & 0.325 \\
- GG2B/SG2B      & OR      &  200 &  145 &  105 &    0 & 0.42  & 0     \\
- GG2B/SG2B      & AND     &  164 &  215 &   35 &   36 & 0.14  & 0.18  \\
- LG1B/GG2B/SG2B & OR      &  200 &  144 &  106 &    0 & 0.424 & 0     \\
- LG1B/GG2B/SG2B & AND     &  135 &  243 &    7 &   65 & 0.028 & 0.325 \\
+
+ LG1B    & -       &   95 &  134 &  116 &  105 & \underline{46.40} & \underline{52.50} \\
+ GG2B    & -       &  199 &  168 &   82 &    1 & 32.80             & \textbf{0.50}     \\
+ SG2B    & -       &  165 &  192 &   58 &   35 & 23.20             & 17.50             \\
+ WG7B    & -       &  186 &  246 &    4 &   14 & \textbf{1.60}     & 7.00              \\
+ LG8B    & -       &  164 &  243 &    7 &   36 & 2.80              & 18.00             \\
+
 \bottomrule
 \end{tabular}
 \caption{\label{tab:widgets}XSTEST Table 1}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[H]
 \begin{tabular}{llrrrrrr}
 \toprule
  Model          & Logic   &   Accuracy &   Specificity &   Precision &   Recall &   F1Score &      MCC \\
 \midrule
- LG1B           & -       &   0.862222 &         0.936 &    0.905882 &    0.77  &  0.832432 & 0.723579 \\
- GG2B           & -       &   0.815556 &         0.672 &    0.708185 &    0.995 &  0.827443 & 0.684407 \\
- SG2B           & -       &   0.793333 &         0.768 &    0.73991  &    0.825 &  0.780142 & 0.589351 \\
- LG1B/GG2B      & OR      &   0.813333 &         0.668 &    0.705674 &    0.995 &  0.825726 & 0.681113 \\
- LG1B/GG2B      & AND     &   0.864444 &         0.94  &    0.911243 &    0.77  &  0.834688 & 0.728529 \\
- LG1B/SG2B      & OR      &   0.815556 &         0.732 &    0.733068 &    0.92  &  0.815965 & 0.652333 \\
- LG1B/SG2B      & AND     &   0.84     &         0.972 &    0.950704 &    0.675 &  0.789474 & 0.691783 \\
- GG2B/SG2B      & OR      &   0.766667 &         0.58  &    0.655738 &    1     &  0.792079 & 0.616707 \\
- GG2B/SG2B      & AND     &   0.842222 &         0.86  &    0.824121 &    0.82  &  0.822055 & 0.680347 \\
- LG1B/GG2B/SG2B & OR      &   0.764444 &         0.576 &    0.653595 &    1     &  0.790514 & 0.613572 \\
- LG1B/GG2B/SG2B & AND     &   0.84     &         0.972 &    0.950704 &    0.675 &  0.789474 & 0.691783 \\
+
+ LG1B    & -       & \underline{50.89} & \underline{53.60} & \underline{45.02} & \underline{47.50} & \underline{46.23} & \underline{1.10} \\
+ GG2B    & -       & 81.56             & 67.20             & 70.82             & \textbf{99.50}    & 82.74             & 68.44            \\
+ SG2B    & -       & 79.33             & 76.80             & 73.99             & 82.50             & 78.01             & 58.94            \\
+ WG7B    & -       & \textbf{96.00}    & \textbf{98.40}    & \textbf{97.89}    & 93.00             & \textbf{95.38}    & \textbf{91.95}   \\
+ LG8B    & -       & 90.44             & 97.20             & 95.91             & 82.00             & 88.41             & 81.08            \\
+
 \bottomrule
 \end{tabular}
 \caption{\label{tab:xstest2}XSTEST Table 2}
+\end{table}
+
+%--------------------------------------------------
+\subsection{MedSafetyBench}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llrrrrrr}
+\toprule
+ Model          & Logic   &   TP &   TN &   FP &   FN &   FPR &   FNR \\
+\midrule
+
+ LG1B    & -       &  213 &    0 &    0 &  237 & --    & 52.67             \\
+ GG2B    & -       &  396 &    0 &    0 &   54 & --    & 12.00             \\
+ SG2B    & -       &  120 &    0 &    0 &  330 & --    & \underline{73.33} \\
+ WG7B    & -       &  405 &    0 &    0 &   45 & --    & \textbf{10.00}    \\
+ LG8B    & -       &  232 &    0 &    0 &  218 & --    & 48.44             \\
+
+\bottomrule
+\end{tabular}
+\caption{\label{tab:widgets}MedSafetyBench Table 1}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{llrrrrrr}
+\toprule
+ Model          & Logic   &   Accuracy &   Specificity &   Precision &   Recall &   F1Score &      MCC \\
+\midrule
+
+ LG1B    & -       & 47.33             & --            & \textbf{100.00} & 47.33             & 64.25             & --    \\
+ GG2B    & -       & 88.00             & --            & \textbf{100.00} & 88.00             & 93.62             & --    \\
+ SG2B    & -       & \underline{26.67} & --            & \textbf{100.00} & \underline{26.67} & \underline{42.11} & --    \\
+ WG7B    & -       & \textbf{90.00}    & --            & \textbf{100.00} & \textbf{90.00}    & \textbf{94.74}    & --    \\
+ LG8B    & -       & 51.56             & --            & \textbf{100.00} & 51.56             & 68.04             & --    \\
+
+\bottomrule
+\end{tabular}
+\caption{\label{tab:xstest2}MedSafetyBench Table 2}
+\end{table}
+
+%--------------------------------------------------
+\subsection{PatientSafetyBench}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llrrrrrr}
+\toprule
+ Model          & Logic   &   TP &   TN &   FP &   FN &   FPR &   FNR \\
+\midrule
+
+ LG1B    & -       &  217 &    0 &    0 &  249 & --    & 53.43             \\
+ GG2B    & -       &  233 &    0 &    0 &  233 & --    & \textbf{50.00}    \\
+ SG2B    & -       &  126 &    0 &    0 &  340 & --    & \underline{72.96} \\
+ WG7B    & -       &  215 &    0 &    0 &  251 & --    & 53.86             \\
+ LG8B    & -       &  195 &    0 &    0 &  271 & --    & 58.15             \\
+
+\bottomrule
+\end{tabular}
+\caption{\label{tab:widgets}PatientSafetyBench Table 1}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{llrrrrrr}
+\toprule
+ Model          & Logic   &   Accuracy &   Specificity &   Precision &   Recall &   F1Score &      MCC \\
+\midrule
+
+ LG1B    & -       & 46.57             & --            & \textbf{100.00} & 46.57             & 63.54             & --    \\
+ GG2B    & -       & \textbf{50.00}    & --            & \textbf{100.00} & \textbf{50.00}    & \textbf{66.67}    & --    \\
+ SG2B    & -       & \underline{27.04} & --            & \textbf{100.00} & \underline{27.04} & \underline{42.57} & --    \\
+ WG7B    & -       & 46.14             & --            & \textbf{100.00} & 46.14             & 63.14             & --    \\
+ LG8B    & -       & 41.85             & --            & \textbf{100.00} & 41.85             & 59.00             & --    \\
+
+\bottomrule
+\end{tabular}
+\caption{\label{tab:xstest2}PatientSafetyBench Table 2}
 \end{table}
 
 %--------------------------------------------------
@@ -98,63 +169,63 @@ Model & Logic & TP & TN & FP & FN & FPR & FNR \\
 \bottomrule
 \endlastfoot
 
-LG1B                     & -       &   87 &  141 &  109 &  113 & 43.60             & 56.50             \\
- LG8B                     & -       &  164 &  243 &    7 &   36 & 2.80              & 18.00             \\
- GG2B                     & -       &  198 &  167 &   83 &    2 & 33.20             & 1.00              \\
+ LG1B                     & -       &   95 &  134 &  116 &  105 & 46.40             & 52.50             \\
+ GG2B                     & -       &  199 &  168 &   82 &    1 & 32.80             & 0.50              \\
  SG2B                     & -       &  165 &  192 &   58 &   35 & 23.20             & 17.50             \\
- WG7B                     & -       &  186 &  247 &    3 &   14 & 1.20              & 7.00              \\
- LG1B/LG8B                & OR      &  180 &  136 &  114 &   20 & 45.60             & 10.00             \\
- LG1B/LG8B                & AND     &   71 &  248 &    2 &  129 & 0.80              & 64.50             \\
- LG1B/GG2B                & OR      &  199 &   92 &  158 &    1 & 63.20             & 0.50              \\
- LG1B/GG2B                & AND     &   86 &  216 &   34 &  114 & 13.60             & 57.00             \\
- LG1B/SG2B                & OR      &  182 &  108 &  142 &   18 & 56.80             & 9.00              \\
- LG1B/SG2B                & AND     &   70 &  225 &   25 &  130 & 10.00             & 65.00             \\
- LG1B/WG7B                & OR      &  192 &  138 &  112 &    8 & 44.80             & 4.00              \\
- LG1B/WG7B                & AND     &   81 &  250 &    0 &  119 & \textbf{0.00}     & 59.50             \\
- LG8B/GG2B                & OR      &  198 &  167 &   83 &    2 & 33.20             & 1.00              \\
- LG8B/GG2B                & AND     &  164 &  243 &    7 &   36 & 2.80              & 18.00             \\
- LG8B/SG2B                & OR      &  184 &  187 &   63 &   16 & 25.20             & 8.00              \\
- LG8B/SG2B                & AND     &  145 &  248 &    2 &   55 & 0.80              & 27.50             \\
- LG8B/WG7B                & OR      &  190 &  240 &   10 &   10 & 4.00              & 5.00              \\
- LG8B/WG7B                & AND     &  160 &  250 &    0 &   40 & \textbf{0.00}     & 20.00             \\
- GG2B/SG2B                & OR      &  199 &  145 &  105 &    1 & 42.00             & 0.50              \\
- GG2B/SG2B                & AND     &  164 &  214 &   36 &   36 & 14.40             & 18.00             \\
- GG2B/WG7B                & OR      &  199 &  166 &   84 &    1 & 33.60             & 0.50              \\
- GG2B/WG7B                & AND     &  185 &  248 &    2 &   15 & 0.80              & 7.50              \\
- SG2B/WG7B                & OR      &  195 &  191 &   59 &    5 & 23.60             & 2.50              \\
+ WG7B                     & -       &  186 &  246 &    4 &   14 & 1.60              & 7.00              \\
+ LG8B                     & -       &  164 &  243 &    7 &   36 & 2.80              & 18.00             \\
+ LG1B/GG2B                & OR      &  200 &   88 &  162 &    0 & 64.80             & \textbf{0.00}     \\
+ LG1B/GG2B                & AND     &   94 &  214 &   36 &  106 & 14.40             & 53.00             \\
+ LG1B/SG2B                & OR      &  180 &  100 &  150 &   20 & 60.00             & 10.00             \\
+ LG1B/SG2B                & AND     &   80 &  226 &   24 &  120 & 9.60              & 60.00             \\
+ LG1B/WG7B                & OR      &  191 &  133 &  117 &    9 & 46.80             & 4.50              \\
+ LG1B/WG7B                & AND     &   90 &  247 &    3 &  110 & 1.20              & 55.00             \\
+ LG1B/LG8B                & OR      &  181 &  131 &  119 &   19 & 47.60             & 9.50              \\
+ LG1B/LG8B                & AND     &   78 &  246 &    4 &  122 & 1.60              & 61.00             \\
+ GG2B/SG2B                & OR      &  200 &  147 &  103 &    0 & 41.20             & \textbf{0.00}     \\
+ GG2B/SG2B                & AND     &  164 &  213 &   37 &   36 & 14.80             & 18.00             \\
+ GG2B/WG7B                & OR      &  199 &  167 &   83 &    1 & 33.20             & 0.50              \\
+ GG2B/WG7B                & AND     &  186 &  247 &    3 &   14 & 1.20              & 7.00              \\
+ GG2B/LG8B                & OR      &  199 &  168 &   82 &    1 & 32.80             & 0.50              \\
+ GG2B/LG8B                & AND     &  164 &  243 &    7 &   36 & 2.80              & 18.00             \\
+ SG2B/WG7B                & OR      &  195 &  190 &   60 &    5 & 24.00             & 2.50              \\
  SG2B/WG7B                & AND     &  156 &  248 &    2 &   44 & 0.80              & 22.00             \\
- LG1B/LG8B/GG2B           & OR      &  199 &   92 &  158 &    1 & 63.20             & 0.50              \\
- LG1B/LG8B/GG2B           & AND     &   71 &  248 &    2 &  129 & 0.80              & 64.50             \\
- LG1B/LG8B/SG2B           & OR      &  192 &  105 &  145 &    8 & 58.00             & 4.00              \\
- LG1B/LG8B/SG2B           & AND     &   62 &  250 &    0 &  138 & \textbf{0.00}     & 69.00             \\
- LG1B/LG8B/WG7B           & OR      &  193 &  133 &  117 &    7 & 46.80             & 3.50              \\
- LG1B/LG8B/WG7B           & AND     &   68 &  250 &    0 &  132 & \textbf{0.00}     & 66.00             \\
- LG1B/GG2B/SG2B           & OR      &  199 &   80 &  170 &    1 & 68.00             & 0.50              \\
- LG1B/GG2B/SG2B           & AND     &   69 &  235 &   15 &  131 & 6.00              & 65.50             \\
- LG1B/GG2B/WG7B           & OR      &  200 &   91 &  159 &    0 & 63.60             & \textbf{0.00}     \\
- LG1B/GG2B/WG7B           & AND     &   81 &  250 &    0 &  119 & \textbf{0.00}     & 59.50             \\
- LG1B/SG2B/WG7B           & OR      &  198 &  107 &  143 &    2 & 57.20             & 1.00              \\
- LG1B/SG2B/WG7B           & AND     &   67 &  250 &    0 &  133 & \textbf{0.00}     & 66.50             \\
- LG8B/GG2B/SG2B           & OR      &  199 &  145 &  105 &    1 & 42.00             & 0.50              \\
- LG8B/GG2B/SG2B           & AND     &  145 &  248 &    2 &   55 & 0.80              & 27.50             \\
- LG8B/GG2B/WG7B           & OR      &  199 &  166 &   84 &    1 & 33.60             & 0.50              \\
- LG8B/GG2B/WG7B           & AND     &  160 &  250 &    0 &   40 & \textbf{0.00}     & 20.00             \\
- LG8B/SG2B/WG7B           & OR      &  197 &  186 &   64 &    3 & 25.60             & 1.50              \\
- LG8B/SG2B/WG7B           & AND     &  143 &  250 &    0 &   57 & \textbf{0.00}     & 28.50             \\
- GG2B/SG2B/WG7B           & OR      &  200 &  144 &  106 &    0 & 42.40             & \textbf{0.00}     \\
+ SG2B/LG8B                & OR      &  184 &  187 &   63 &   16 & 25.20             & 8.00              \\
+ SG2B/LG8B                & AND     &  145 &  248 &    2 &   55 & 0.80              & 27.50             \\
+ WG7B/LG8B                & OR      &  190 &  239 &   11 &   10 & 4.40              & 5.00              \\
+ WG7B/LG8B                & AND     &  160 &  250 &    0 &   40 & \textbf{0.00}     & 20.00             \\
+ LG1B/GG2B/SG2B           & OR      &  200 &   74 &  176 &    0 & \underline{70.40} & \textbf{0.00}     \\
+ LG1B/GG2B/SG2B           & AND     &   79 &  233 &   17 &  121 & 6.80              & 60.50             \\
+ LG1B/GG2B/WG7B           & OR      &  200 &   88 &  162 &    0 & 64.80             & \textbf{0.00}     \\
+ LG1B/GG2B/WG7B           & AND     &   90 &  248 &    2 &  110 & 0.80              & 55.00             \\
+ LG1B/GG2B/LG8B           & OR      &  200 &   88 &  162 &    0 & 64.80             & \textbf{0.00}     \\
+ LG1B/GG2B/LG8B           & AND     &   78 &  246 &    4 &  122 & 1.60              & 61.00             \\
+ LG1B/SG2B/WG7B           & OR      &  197 &  100 &  150 &    3 & 60.00             & 1.50              \\
+ LG1B/SG2B/WG7B           & AND     &   77 &  249 &    1 &  123 & 0.40              & 61.50             \\
+ LG1B/SG2B/LG8B           & OR      &  193 &   99 &  151 &    7 & 60.40             & 3.50              \\
+ LG1B/SG2B/LG8B           & AND     &   72 &  250 &    0 &  128 & \textbf{0.00}     & \underline{64.00} \\
+ LG1B/WG7B/LG8B           & OR      &  194 &  130 &  120 &    6 & 48.00             & 3.00              \\
+ LG1B/WG7B/LG8B           & AND     &   77 &  250 &    0 &  123 & \textbf{0.00}     & 61.50             \\
+ GG2B/SG2B/WG7B           & OR      &  200 &  146 &  104 &    0 & 41.60             & \textbf{0.00}     \\
  GG2B/SG2B/WG7B           & AND     &  156 &  248 &    2 &   44 & 0.80              & 22.00             \\
- LG1B/LG8B/GG2B/SG2B      & OR      &  199 &   80 &  170 &    1 & 68.00             & 0.50              \\
- LG1B/LG8B/GG2B/SG2B      & AND     &   62 &  250 &    0 &  138 & \textbf{0.00}     & 69.00             \\
- LG1B/LG8B/GG2B/WG7B      & OR      &  200 &   91 &  159 &    0 & 63.60             & \textbf{0.00}     \\
- LG1B/LG8B/GG2B/WG7B      & AND     &   68 &  250 &    0 &  132 & \textbf{0.00}     & 66.00             \\
- LG1B/LG8B/SG2B/WG7B      & OR      &  199 &  104 &  146 &    1 & 58.40             & 0.50              \\
- LG1B/LG8B/SG2B/WG7B      & AND     &   60 &  250 &    0 &  140 & \textbf{0.00}     & \underline{70.00} \\
- LG1B/GG2B/SG2B/WG7B      & OR      &  200 &   79 &  171 &    0 & \underline{68.40} & \textbf{0.00}     \\
- LG1B/GG2B/SG2B/WG7B      & AND     &   67 &  250 &    0 &  133 & \textbf{0.00}     & 66.50             \\
- LG8B/GG2B/SG2B/WG7B      & OR      &  200 &  144 &  106 &    0 & 42.40             & \textbf{0.00}     \\
- LG8B/GG2B/SG2B/WG7B      & AND     &  143 &  250 &    0 &   57 & \textbf{0.00}     & 28.50             \\
- LG1B/LG8B/GG2B/SG2B/WG7B & OR      &  200 &   79 &  171 &    0 & \underline{68.40} & \textbf{0.00}     \\
- LG1B/LG8B/GG2B/SG2B/WG7B & AND     &   60 &  250 &    0 &  140 & \textbf{0.00}     & \underline{70.00} \\
+ GG2B/SG2B/LG8B           & OR      &  200 &  147 &  103 &    0 & 41.20             & \textbf{0.00}     \\
+ GG2B/SG2B/LG8B           & AND     &  145 &  248 &    2 &   55 & 0.80              & 27.50             \\
+ GG2B/WG7B/LG8B           & OR      &  199 &  167 &   83 &    1 & 33.20             & 0.50              \\
+ GG2B/WG7B/LG8B           & AND     &  160 &  250 &    0 &   40 & \textbf{0.00}     & 20.00             \\
+ SG2B/WG7B/LG8B           & OR      &  197 &  185 &   65 &    3 & 26.00             & 1.50              \\
+ SG2B/WG7B/LG8B           & AND     &  143 &  250 &    0 &   57 & \textbf{0.00}     & 28.50             \\
+ LG1B/GG2B/SG2B/WG7B      & OR      &  200 &   74 &  176 &    0 & \underline{70.40} & \textbf{0.00}     \\
+ LG1B/GG2B/SG2B/WG7B      & AND     &   77 &  249 &    1 &  123 & 0.40              & 61.50             \\
+ LG1B/GG2B/SG2B/LG8B      & OR      &  200 &   74 &  176 &    0 & \underline{70.40} & \textbf{0.00}     \\
+ LG1B/GG2B/SG2B/LG8B      & AND     &   72 &  250 &    0 &  128 & \textbf{0.00}     & \underline{64.00} \\
+ LG1B/GG2B/WG7B/LG8B      & OR      &  200 &   88 &  162 &    0 & 64.80             & \textbf{0.00}     \\
+ LG1B/GG2B/WG7B/LG8B      & AND     &   77 &  250 &    0 &  123 & \textbf{0.00}     & 61.50             \\
+ LG1B/SG2B/WG7B/LG8B      & OR      &  198 &   99 &  151 &    2 & 60.40             & 1.00              \\
+ LG1B/SG2B/WG7B/LG8B      & AND     &   72 &  250 &    0 &  128 & \textbf{0.00}     & \underline{64.00} \\
+ GG2B/SG2B/WG7B/LG8B      & OR      &  200 &  146 &  104 &    0 & 41.60             & \textbf{0.00}     \\
+ GG2B/SG2B/WG7B/LG8B      & AND     &  143 &  250 &    0 &   57 & \textbf{0.00}     & 28.50             \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & OR      &  200 &   74 &  176 &    0 & \underline{70.40} & \textbf{0.00}     \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & AND     &   72 &  250 &    0 &  128 & \textbf{0.00}     & \underline{64.00} \\
 
 \end{longtable}
 }
@@ -183,63 +254,63 @@ Model & Logic & Accuracy & Specificity & Precision & Recall & F1Score & MCC \\
 \bottomrule
 \endlastfoot
 
-LG1B                     & -       & \underline{50.67} & 56.40             & \underline{44.39} & 43.50             & \underline{43.94} & \underline{-0.10} \\
- LG8B                     & -       & 90.44             & 97.20             & 95.91             & 82.00             & 88.41             & 81.08             \\
- GG2B                     & -       & 81.11             & 66.80             & 70.46             & 99.00             & 82.33             & 67.52             \\
- SG2B                     & -       & 79.33             & 76.80             & 73.99             & 82.50             & 78.01             & 58.94             \\
- WG7B                     & -       & \textbf{96.22}    & 98.80             & 98.41             & 93.00             & \textbf{95.63}    & 92.42             \\
- LG1B/LG8B                & OR      & 70.22             & 54.40             & 61.22             & 90.00             & 72.87             & 46.36             \\
- LG1B/LG8B                & AND     & 70.89             & 99.20             & 97.26             & 35.50             & 52.01             & 46.77             \\
- LG1B/GG2B                & OR      & 64.67             & 36.80             & 55.74             & 99.50             & 71.45             & 44.55             \\
- LG1B/GG2B                & AND     & 67.11             & 86.40             & 71.67             & 43.00             & 53.75             & 33.04             \\
- LG1B/SG2B                & OR      & 64.44             & 43.20             & 56.17             & 91.00             & 69.47             & 37.85             \\
- LG1B/SG2B                & AND     & 65.56             & 90.00             & 73.68             & 35.00             & 47.46             & 30.44             \\
- LG1B/WG7B                & OR      & 73.33             & 55.20             & 63.16             & 96.00             & 76.19             & 54.34             \\
- LG1B/WG7B                & AND     & 73.56             & \textbf{100.00}   & \textbf{100.00}   & 40.50             & 57.65             & 52.38             \\
- LG8B/GG2B                & OR      & 81.11             & 66.80             & 70.46             & 99.00             & 82.33             & 67.52             \\
- LG8B/GG2B                & AND     & 90.44             & 97.20             & 95.91             & 82.00             & 88.41             & 81.08             \\
- LG8B/SG2B                & OR      & 82.44             & 74.80             & 74.49             & 92.00             & 82.33             & 66.71             \\
- LG8B/SG2B                & AND     & 87.33             & 99.20             & 98.64             & 72.50             & 83.57             & 75.97             \\
- LG8B/WG7B                & OR      & 95.56             & 96.00             & 95.00             & 95.00             & 95.00             & 91.00             \\
- LG8B/WG7B                & AND     & 91.11             & \textbf{100.00}   & \textbf{100.00}   & 80.00             & 88.89             & 83.05             \\
- GG2B/SG2B                & OR      & 76.44             & 58.00             & 65.46             & 99.50             & 78.97             & 61.03             \\
- GG2B/SG2B                & AND     & 84.00             & 85.60             & 82.00             & 82.00             & 82.00             & 67.60             \\
- GG2B/WG7B                & OR      & 81.11             & 66.40             & 70.32             & 99.50             & 82.40             & 67.78             \\
- GG2B/WG7B                & AND     & \textbf{96.22}    & 99.20             & 98.93             & 92.50             & 95.61             & \textbf{92.46}    \\
- SG2B/WG7B                & OR      & 85.78             & 76.40             & 76.77             & 97.50             & 85.90             & 74.06             \\
- SG2B/WG7B                & AND     & 89.78             & 99.20             & 98.73             & 78.00             & 87.15             & 80.37             \\
- LG1B/LG8B/GG2B           & OR      & 64.67             & 36.80             & 55.74             & 99.50             & 71.45             & 44.55             \\
- LG1B/LG8B/GG2B           & AND     & 70.89             & 99.20             & 97.26             & 35.50             & 52.01             & 46.77             \\
- LG1B/LG8B/SG2B           & OR      & 66.00             & 42.00             & 56.97             & 96.00             & 71.51             & 43.54             \\
- LG1B/LG8B/SG2B           & AND     & 69.33             & \textbf{100.00}   & \textbf{100.00}   & 31.00             & 47.33             & 44.69             \\
- LG1B/LG8B/WG7B           & OR      & 72.44             & 53.20             & 62.26             & 96.50             & 75.69             & 53.35             \\
- LG1B/LG8B/WG7B           & AND     & 70.67             & \textbf{100.00}   & \textbf{100.00}   & 34.00             & 50.75             & 47.17             \\
- LG1B/GG2B/SG2B           & OR      & 62.00             & 32.00             & 53.93             & 99.50             & 69.95             & 40.74             \\
- LG1B/GG2B/SG2B           & AND     & 67.56             & 94.00             & 82.14             & 34.50             & 48.59             & 36.35             \\
- LG1B/GG2B/WG7B           & OR      & 64.67             & 36.40             & 55.71             & \textbf{100.00}   & 71.56             & 45.03             \\
- LG1B/GG2B/WG7B           & AND     & 73.56             & \textbf{100.00}   & \textbf{100.00}   & 40.50             & 57.65             & 52.38             \\
- LG1B/SG2B/WG7B           & OR      & 67.78             & 42.80             & 58.06             & 99.00             & 73.20             & 48.48             \\
- LG1B/SG2B/WG7B           & AND     & 70.44             & \textbf{100.00}   & \textbf{100.00}   & 33.50             & 50.19             & 46.76             \\
- LG8B/GG2B/SG2B           & OR      & 76.44             & 58.00             & 65.46             & 99.50             & 78.97             & 61.03             \\
- LG8B/GG2B/SG2B           & AND     & 87.33             & 99.20             & 98.64             & 72.50             & 83.57             & 75.97             \\
- LG8B/GG2B/WG7B           & OR      & 81.11             & 66.40             & 70.32             & 99.50             & 82.40             & 67.78             \\
- LG8B/GG2B/WG7B           & AND     & 91.11             & \textbf{100.00}   & \textbf{100.00}   & 80.00             & 88.89             & 83.05             \\
- LG8B/SG2B/WG7B           & OR      & 85.11             & 74.40             & 75.48             & 98.50             & 85.47             & 73.39             \\
- LG8B/SG2B/WG7B           & AND     & 87.33             & \textbf{100.00}   & \textbf{100.00}   & 71.50             & 83.38             & 76.31             \\
- GG2B/SG2B/WG7B           & OR      & 76.44             & 57.60             & 65.36             & \textbf{100.00}   & 79.05             & 61.36             \\
- GG2B/SG2B/WG7B           & AND     & 89.78             & 99.20             & 98.73             & 78.00             & 87.15             & 80.37             \\
- LG1B/LG8B/GG2B/SG2B      & OR      & 62.00             & 32.00             & 53.93             & 99.50             & 69.95             & 40.74             \\
- LG1B/LG8B/GG2B/SG2B      & AND     & 69.33             & \textbf{100.00}   & \textbf{100.00}   & 31.00             & 47.33             & 44.69             \\
- LG1B/LG8B/GG2B/WG7B      & OR      & 64.67             & 36.40             & 55.71             & \textbf{100.00}   & 71.56             & 45.03             \\
- LG1B/LG8B/GG2B/WG7B      & AND     & 70.67             & \textbf{100.00}   & \textbf{100.00}   & 34.00             & 50.75             & 47.17             \\
- LG1B/LG8B/SG2B/WG7B      & OR      & 67.33             & 41.60             & 57.68             & 99.50             & 73.03             & 48.29             \\
- LG1B/LG8B/SG2B/WG7B      & AND     & 68.89             & \textbf{100.00}   & \textbf{100.00}   & \underline{30.00} & 46.15             & 43.85             \\
- LG1B/GG2B/SG2B/WG7B      & OR      & 62.00             & \underline{31.60} & 53.91             & \textbf{100.00}   & 70.05             & 41.27             \\
- LG1B/GG2B/SG2B/WG7B      & AND     & 70.44             & \textbf{100.00}   & \textbf{100.00}   & 33.50             & 50.19             & 46.76             \\
- LG8B/GG2B/SG2B/WG7B      & OR      & 76.44             & 57.60             & 65.36             & \textbf{100.00}   & 79.05             & 61.36             \\
- LG8B/GG2B/SG2B/WG7B      & AND     & 87.33             & \textbf{100.00}   & \textbf{100.00}   & 71.50             & 83.38             & 76.31             \\
- LG1B/LG8B/GG2B/SG2B/WG7B & OR      & 62.00             & \underline{31.60} & 53.91             & \textbf{100.00}   & 70.05             & 41.27             \\
- LG1B/LG8B/GG2B/SG2B/WG7B & AND     & 68.89             & \textbf{100.00}   & \textbf{100.00}   & \underline{30.00} & 46.15             & 43.85             \\
+ LG1B                     & -       & \underline{50.89} & 53.60             & \underline{45.02} & 47.50             & \underline{46.23} & \underline{1.10} \\
+ GG2B                     & -       & 81.56             & 67.20             & 70.82             & 99.50             & 82.74             & 68.44            \\
+ SG2B                     & -       & 79.33             & 76.80             & 73.99             & 82.50             & 78.01             & 58.94            \\
+ WG7B                     & -       & 96.00             & 98.40             & 97.89             & 93.00             & 95.38             & 91.95            \\
+ LG8B                     & -       & 90.44             & 97.20             & 95.91             & 82.00             & 88.41             & 81.08            \\
+ LG1B/GG2B                & OR      & 64.00             & 35.20             & 55.25             & \textbf{100.00}   & 71.17             & 44.10            \\
+ LG1B/GG2B                & AND     & 68.44             & 85.60             & 72.31             & 47.00             & 56.97             & 35.74            \\
+ LG1B/SG2B                & OR      & 62.22             & 40.00             & 54.55             & 90.00             & 67.92             & 33.71            \\
+ LG1B/SG2B                & AND     & 68.00             & 90.40             & 76.92             & 40.00             & 52.63             & 35.83            \\
+ LG1B/WG7B                & OR      & 72.00             & 53.20             & 62.01             & 95.50             & 75.20             & 52.07            \\
+ LG1B/WG7B                & AND     & 74.89             & 98.80             & 96.77             & 45.00             & 61.43             & 53.75            \\
+ LG1B/LG8B                & OR      & 69.33             & 52.40             & 60.33             & 90.50             & 72.40             & 45.22            \\
+ LG1B/LG8B                & AND     & 72.00             & 98.40             & 95.12             & 39.00             & 55.32             & 48.14            \\
+ GG2B/SG2B                & OR      & 77.11             & 58.80             & 66.01             & \textbf{100.00}   & 79.52             & 62.30            \\
+ GG2B/SG2B                & AND     & 83.78             & 85.20             & 81.59             & 82.00             & 81.80             & 67.17            \\
+ GG2B/WG7B                & OR      & 81.33             & 66.80             & 70.57             & 99.50             & 82.57             & 68.11            \\
+ GG2B/WG7B                & AND     & \textbf{96.22}    & 98.80             & 98.41             & 93.00             & \textbf{95.63}    & \textbf{92.42}   \\
+ GG2B/LG8B                & OR      & 81.56             & 67.20             & 70.82             & 99.50             & 82.74             & 68.44            \\
+ GG2B/LG8B                & AND     & 90.44             & 97.20             & 95.91             & 82.00             & 88.41             & 81.08            \\
+ SG2B/WG7B                & OR      & 85.56             & 76.00             & 76.47             & 97.50             & 85.71             & 73.70            \\
+ SG2B/WG7B                & AND     & 89.78             & 99.20             & 98.73             & 78.00             & 87.15             & 80.37            \\
+ SG2B/LG8B                & OR      & 82.44             & 74.80             & 74.49             & 92.00             & 82.33             & 66.71            \\
+ SG2B/LG8B                & AND     & 87.33             & 99.20             & 98.64             & 72.50             & 83.57             & 75.97            \\
+ WG7B/LG8B                & OR      & 95.33             & 95.60             & 94.53             & 95.00             & 94.76             & 90.56            \\
+ WG7B/LG8B                & AND     & 91.11             & \textbf{100.00}   & \textbf{100.00}   & 80.00             & 88.89             & 83.05            \\
+ LG1B/GG2B/SG2B           & OR      & 60.89             & \underline{29.60} & 53.19             & \textbf{100.00}   & 69.44             & 39.68            \\
+ LG1B/GG2B/SG2B           & AND     & 69.33             & 93.20             & 82.29             & 39.50             & 53.38             & 39.66            \\
+ LG1B/GG2B/WG7B           & OR      & 64.00             & 35.20             & 55.25             & \textbf{100.00}   & 71.17             & 44.10            \\
+ LG1B/GG2B/WG7B           & AND     & 75.11             & 99.20             & 97.83             & 45.00             & 61.64             & 54.46            \\
+ LG1B/GG2B/LG8B           & OR      & 64.00             & 35.20             & 55.25             & \textbf{100.00}   & 71.17             & 44.10            \\
+ LG1B/GG2B/LG8B           & AND     & 72.00             & 98.40             & 95.12             & 39.00             & 55.32             & 48.14            \\
+ LG1B/SG2B/WG7B           & OR      & 66.00             & 40.00             & 56.77             & 98.50             & 72.03             & 45.54            \\
+ LG1B/SG2B/WG7B           & AND     & 72.44             & 99.60             & 98.72             & 38.50             & 55.40             & 50.01            \\
+ LG1B/SG2B/LG8B           & OR      & 64.89             & 39.60             & 56.10             & 96.50             & 70.96             & 42.27            \\
+ LG1B/SG2B/LG8B           & AND     & 71.56             & \textbf{100.00}   & \textbf{100.00}   & \underline{36.00} & 52.94             & 48.80            \\
+ LG1B/WG7B/LG8B           & OR      & 72.00             & 52.00             & 61.78             & 97.00             & 75.49             & 53.02            \\
+ LG1B/WG7B/LG8B           & AND     & 72.67             & \textbf{100.00}   & \textbf{100.00}   & 38.50             & 55.60             & 50.80            \\
+ GG2B/SG2B/WG7B           & OR      & 76.89             & 58.40             & 65.79             & \textbf{100.00}   & 79.37             & 61.98            \\
+ GG2B/SG2B/WG7B           & AND     & 89.78             & 99.20             & 98.73             & 78.00             & 87.15             & 80.37            \\
+ GG2B/SG2B/LG8B           & OR      & 77.11             & 58.80             & 66.01             & \textbf{100.00}   & 79.52             & 62.30            \\
+ GG2B/SG2B/LG8B           & AND     & 87.33             & 99.20             & 98.64             & 72.50             & 83.57             & 75.97            \\
+ GG2B/WG7B/LG8B           & OR      & 81.33             & 66.80             & 70.57             & 99.50             & 82.57             & 68.11            \\
+ GG2B/WG7B/LG8B           & AND     & 91.11             & \textbf{100.00}   & \textbf{100.00}   & 80.00             & 88.89             & 83.05            \\
+ SG2B/WG7B/LG8B           & OR      & 84.89             & 74.00             & 75.19             & 98.50             & 85.28             & 73.05            \\
+ SG2B/WG7B/LG8B           & AND     & 87.33             & \textbf{100.00}   & \textbf{100.00}   & 71.50             & 83.38             & 76.31            \\
+ LG1B/GG2B/SG2B/WG7B      & OR      & 60.89             & \underline{29.60} & 53.19             & \textbf{100.00}   & 69.44             & 39.68            \\
+ LG1B/GG2B/SG2B/WG7B      & AND     & 72.44             & 99.60             & 98.72             & 38.50             & 55.40             & 50.01            \\
+ LG1B/GG2B/SG2B/LG8B      & OR      & 60.89             & \underline{29.60} & 53.19             & \textbf{100.00}   & 69.44             & 39.68            \\
+ LG1B/GG2B/SG2B/LG8B      & AND     & 71.56             & \textbf{100.00}   & \textbf{100.00}   & \underline{36.00} & 52.94             & 48.80            \\
+ LG1B/GG2B/WG7B/LG8B      & OR      & 64.00             & 35.20             & 55.25             & \textbf{100.00}   & 71.17             & 44.10            \\
+ LG1B/GG2B/WG7B/LG8B      & AND     & 72.67             & \textbf{100.00}   & \textbf{100.00}   & 38.50             & 55.60             & 50.80            \\
+ LG1B/SG2B/WG7B/LG8B      & OR      & 66.00             & 39.60             & 56.73             & 99.00             & 72.13             & 45.97            \\
+ LG1B/SG2B/WG7B/LG8B      & AND     & 71.56             & \textbf{100.00}   & \textbf{100.00}   & \underline{36.00} & 52.94             & 48.80            \\
+ GG2B/SG2B/WG7B/LG8B      & OR      & 76.89             & 58.40             & 65.79             & \textbf{100.00}   & 79.37             & 61.98            \\
+ GG2B/SG2B/WG7B/LG8B      & AND     & 87.33             & \textbf{100.00}   & \textbf{100.00}   & 71.50             & 83.38             & 76.31            \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & OR      & 60.89             & \underline{29.60} & 53.19             & \textbf{100.00}   & 69.44             & 39.68            \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & AND     & 71.56             & \textbf{100.00}   & \textbf{100.00}   & \underline{36.00} & 52.94             & 48.80            \\
 
 \end{longtable}
 }
@@ -268,63 +339,63 @@ Model & Logic & TP & TN & FP & FN & FPR & FNR \\
 \bottomrule
 \endlastfoot
 
-LG1B                     & -       &  208 &    0 &    0 &  242 & --    & 53.78             \\
- LG8B                     & -       &  232 &    0 &    0 &  218 & --    & 48.44             \\
+LG1B                     & -       &  213 &    0 &    0 &  237 & --    & 52.67             \\
  GG2B                     & -       &  396 &    0 &    0 &   54 & --    & 12.00             \\
  SG2B                     & -       &  120 &    0 &    0 &  330 & --    & 73.33             \\
  WG7B                     & -       &  405 &    0 &    0 &   45 & --    & 10.00             \\
- LG1B/LG8B                & OR      &  327 &    0 &    0 &  123 & --    & 27.33             \\
- LG1B/LG8B                & AND     &  113 &    0 &    0 &  337 & --    & 74.89             \\
+ LG8B                     & -       &  232 &    0 &    0 &  218 & --    & 48.44             \\
  LG1B/GG2B                & OR      &  418 &    0 &    0 &   32 & --    & 7.11              \\
- LG1B/GG2B                & AND     &  186 &    0 &    0 &  264 & --    & 58.67             \\
+ LG1B/GG2B                & AND     &  191 &    0 &    0 &  259 & --    & 57.56             \\
  LG1B/SG2B                & OR      &  272 &    0 &    0 &  178 & --    & 39.56             \\
- LG1B/SG2B                & AND     &   56 &    0 &    0 &  394 & --    & 87.56             \\
- LG1B/WG7B                & OR      &  425 &    0 &    0 &   25 & --    & 5.56              \\
- LG1B/WG7B                & AND     &  188 &    0 &    0 &  262 & --    & 58.22             \\
- LG8B/GG2B                & OR      &  397 &    0 &    0 &   53 & --    & 11.78             \\
- LG8B/GG2B                & AND     &  231 &    0 &    0 &  219 & --    & 48.67             \\
- LG8B/SG2B                & OR      &  263 &    0 &    0 &  187 & --    & 41.56             \\
- LG8B/SG2B                & AND     &   89 &    0 &    0 &  361 & --    & 80.22             \\
- LG8B/WG7B                & OR      &  406 &    0 &    0 &   44 & --    & 9.78              \\
- LG8B/WG7B                & AND     &  231 &    0 &    0 &  219 & --    & 48.67             \\
+ LG1B/SG2B                & AND     &   61 &    0 &    0 &  389 & --    & 86.44             \\
+ LG1B/WG7B                & OR      &  428 &    0 &    0 &   22 & --    & 4.89              \\
+ LG1B/WG7B                & AND     &  190 &    0 &    0 &  260 & --    & 57.78             \\
+ LG1B/LG8B                & OR      &  336 &    0 &    0 &  114 & --    & 25.33             \\
+ LG1B/LG8B                & AND     &  109 &    0 &    0 &  341 & --    & 75.78             \\
  GG2B/SG2B                & OR      &  397 &    0 &    0 &   53 & --    & 11.78             \\
  GG2B/SG2B                & AND     &  119 &    0 &    0 &  331 & --    & 73.56             \\
  GG2B/WG7B                & OR      &  416 &    0 &    0 &   34 & --    & 7.56              \\
  GG2B/WG7B                & AND     &  385 &    0 &    0 &   65 & --    & 14.44             \\
+ GG2B/LG8B                & OR      &  397 &    0 &    0 &   53 & --    & 11.78             \\
+ GG2B/LG8B                & AND     &  231 &    0 &    0 &  219 & --    & 48.67             \\
  SG2B/WG7B                & OR      &  407 &    0 &    0 &   43 & --    & 9.56              \\
  SG2B/WG7B                & AND     &  118 &    0 &    0 &  332 & --    & 73.78             \\
- LG1B/LG8B/GG2B           & OR      &  418 &    0 &    0 &   32 & --    & 7.11              \\
- LG1B/LG8B/GG2B           & AND     &  112 &    0 &    0 &  338 & --    & 75.11             \\
- LG1B/LG8B/SG2B           & OR      &  346 &    0 &    0 &  104 & --    & 23.11             \\
- LG1B/LG8B/SG2B           & AND     &   44 &    0 &    0 &  406 & --    & \underline{90.22} \\
- LG1B/LG8B/WG7B           & OR      &  426 &    0 &    0 &   24 & --    & 5.33              \\
- LG1B/LG8B/WG7B           & AND     &  113 &    0 &    0 &  337 & --    & 74.89             \\
- LG1B/GG2B/SG2B           & OR      &  419 &    0 &    0 &   31 & --    & 6.89              \\
- LG1B/GG2B/SG2B           & AND     &   56 &    0 &    0 &  394 & --    & 87.56             \\
- LG1B/GG2B/WG7B           & OR      &  431 &    0 &    0 &   19 & --    & \textbf{4.22}     \\
- LG1B/GG2B/WG7B           & AND     &  181 &    0 &    0 &  269 & --    & 59.78             \\
- LG1B/SG2B/WG7B           & OR      &  427 &    0 &    0 &   23 & --    & 5.11              \\
- LG1B/SG2B/WG7B           & AND     &   56 &    0 &    0 &  394 & --    & 87.56             \\
- LG8B/GG2B/SG2B           & OR      &  398 &    0 &    0 &   52 & --    & 11.56             \\
- LG8B/GG2B/SG2B           & AND     &   89 &    0 &    0 &  361 & --    & 80.22             \\
- LG8B/GG2B/WG7B           & OR      &  416 &    0 &    0 &   34 & --    & 7.56              \\
- LG8B/GG2B/WG7B           & AND     &  230 &    0 &    0 &  220 & --    & 48.89             \\
- LG8B/SG2B/WG7B           & OR      &  407 &    0 &    0 &   43 & --    & 9.56              \\
- LG8B/SG2B/WG7B           & AND     &   88 &    0 &    0 &  362 & --    & 80.44             \\
+ SG2B/LG8B                & OR      &  263 &    0 &    0 &  187 & --    & 41.56             \\
+ SG2B/LG8B                & AND     &   89 &    0 &    0 &  361 & --    & 80.22             \\
+ WG7B/LG8B                & OR      &  406 &    0 &    0 &   44 & --    & 9.78              \\
+ WG7B/LG8B                & AND     &  231 &    0 &    0 &  219 & --    & 48.67             \\
+ LG1B/GG2B/SG2B           & OR      &  418 &    0 &    0 &   32 & --    & 7.11              \\
+ LG1B/GG2B/SG2B           & AND     &   60 &    0 &    0 &  390 & --    & 86.67             \\
+ LG1B/GG2B/WG7B           & OR      &  433 &    0 &    0 &   17 & --    & \textbf{3.78}     \\
+ LG1B/GG2B/WG7B           & AND     &  185 &    0 &    0 &  265 & --    & 58.89             \\
+ LG1B/GG2B/LG8B           & OR      &  419 &    0 &    0 &   31 & --    & 6.89              \\
+ LG1B/GG2B/LG8B           & AND     &  109 &    0 &    0 &  341 & --    & 75.78             \\
+ LG1B/SG2B/WG7B           & OR      &  430 &    0 &    0 &   20 & --    & 4.44              \\
+ LG1B/SG2B/WG7B           & AND     &   61 &    0 &    0 &  389 & --    & 86.44             \\
+ LG1B/SG2B/LG8B           & OR      &  351 &    0 &    0 &   99 & --    & 22.00             \\
+ LG1B/SG2B/LG8B           & AND     &   45 &    0 &    0 &  405 & --    & \underline{90.00} \\
+ LG1B/WG7B/LG8B           & OR      &  429 &    0 &    0 &   21 & --    & 4.67              \\
+ LG1B/WG7B/LG8B           & AND     &  109 &    0 &    0 &  341 & --    & 75.78             \\
  GG2B/SG2B/WG7B           & OR      &  416 &    0 &    0 &   34 & --    & 7.56              \\
  GG2B/SG2B/WG7B           & AND     &  117 &    0 &    0 &  333 & --    & 74.00             \\
- LG1B/LG8B/GG2B/SG2B      & OR      &  419 &    0 &    0 &   31 & --    & 6.89              \\
- LG1B/LG8B/GG2B/SG2B      & AND     &   44 &    0 &    0 &  406 & --    & \underline{90.22} \\
- LG1B/LG8B/GG2B/WG7B      & OR      &  431 &    0 &    0 &   19 & --    & \textbf{4.22}     \\
- LG1B/LG8B/GG2B/WG7B      & AND     &  112 &    0 &    0 &  338 & --    & 75.11             \\
- LG1B/LG8B/SG2B/WG7B      & OR      &  427 &    0 &    0 &   23 & --    & 5.11              \\
- LG1B/LG8B/SG2B/WG7B      & AND     &   44 &    0 &    0 &  406 & --    & \underline{90.22} \\
- LG1B/GG2B/SG2B/WG7B      & OR      &  431 &    0 &    0 &   19 & --    & \textbf{4.22}     \\
- LG1B/GG2B/SG2B/WG7B      & AND     &   56 &    0 &    0 &  394 & --    & 87.56             \\
- LG8B/GG2B/SG2B/WG7B      & OR      &  416 &    0 &    0 &   34 & --    & 7.56              \\
- LG8B/GG2B/SG2B/WG7B      & AND     &   88 &    0 &    0 &  362 & --    & 80.44             \\
- LG1B/LG8B/GG2B/SG2B/WG7B & OR      &  431 &    0 &    0 &   19 & --    & \textbf{4.22}     \\
- LG1B/LG8B/GG2B/SG2B/WG7B & AND     &   44 &    0 &    0 &  406 & --    & \underline{90.22} \\
+ GG2B/SG2B/LG8B           & OR      &  398 &    0 &    0 &   52 & --    & 11.56             \\
+ GG2B/SG2B/LG8B           & AND     &   89 &    0 &    0 &  361 & --    & 80.22             \\
+ GG2B/WG7B/LG8B           & OR      &  416 &    0 &    0 &   34 & --    & 7.56              \\
+ GG2B/WG7B/LG8B           & AND     &  230 &    0 &    0 &  220 & --    & 48.89             \\
+ SG2B/WG7B/LG8B           & OR      &  407 &    0 &    0 &   43 & --    & 9.56              \\
+ SG2B/WG7B/LG8B           & AND     &   88 &    0 &    0 &  362 & --    & 80.44             \\
+ LG1B/GG2B/SG2B/WG7B      & OR      &  433 &    0 &    0 &   17 & --    & \textbf{3.78}     \\
+ LG1B/GG2B/SG2B/WG7B      & AND     &   60 &    0 &    0 &  390 & --    & 86.67             \\
+ LG1B/GG2B/SG2B/LG8B      & OR      &  419 &    0 &    0 &   31 & --    & 6.89              \\
+ LG1B/GG2B/SG2B/LG8B      & AND     &   45 &    0 &    0 &  405 & --    & \underline{90.00} \\
+ LG1B/GG2B/WG7B/LG8B      & OR      &  433 &    0 &    0 &   17 & --    & \textbf{3.78}     \\
+ LG1B/GG2B/WG7B/LG8B      & AND     &  109 &    0 &    0 &  341 & --    & 75.78             \\
+ LG1B/SG2B/WG7B/LG8B      & OR      &  430 &    0 &    0 &   20 & --    & 4.44              \\
+ LG1B/SG2B/WG7B/LG8B      & AND     &   45 &    0 &    0 &  405 & --    & \underline{90.00} \\
+ GG2B/SG2B/WG7B/LG8B      & OR      &  416 &    0 &    0 &   34 & --    & 7.56              \\
+ GG2B/SG2B/WG7B/LG8B      & AND     &   88 &    0 &    0 &  362 & --    & 80.44             \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & OR      &  433 &    0 &    0 &   17 & --    & \textbf{3.78}     \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & AND     &   45 &    0 &    0 &  405 & --    & \underline{90.00} \\
 
 \end{longtable}
 }
@@ -353,63 +424,63 @@ Model & Logic & Accuracy & Specificity & Precision & Recall & F1Score & MCC \\
 \bottomrule
 \endlastfoot
 
-LG1B                     & -       & 46.22            & --            & \textbf{100.00} & 46.22            & 63.22             & --    \\
- LG8B                     & -       & 51.56            & --            & \textbf{100.00} & 51.56            & 68.04             & --    \\
- GG2B                     & -       & 88.00            & --            & \textbf{100.00} & 88.00            & 93.62             & --    \\
- SG2B                     & -       & 26.67            & --            & \textbf{100.00} & 26.67            & 42.11             & --    \\
- WG7B                     & -       & 90.00            & --            & \textbf{100.00} & 90.00            & 94.74             & --    \\
- LG1B/LG8B                & OR      & 72.67            & --            & \textbf{100.00} & 72.67            & 84.17             & --    \\
- LG1B/LG8B                & AND     & 25.11            & --            & \textbf{100.00} & 25.11            & 40.14             & --    \\
- LG1B/GG2B                & OR      & 92.89            & --            & \textbf{100.00} & 92.89            & 96.31             & --    \\
- LG1B/GG2B                & AND     & 41.33            & --            & \textbf{100.00} & 41.33            & 58.49             & --    \\
- LG1B/SG2B                & OR      & 60.44            & --            & \textbf{100.00} & 60.44            & 75.35             & --    \\
- LG1B/SG2B                & AND     & 12.44            & --            & \textbf{100.00} & 12.44            & 22.13             & --    \\
- LG1B/WG7B                & OR      & 94.44            & --            & \textbf{100.00} & 94.44            & 97.14             & --    \\
- LG1B/WG7B                & AND     & 41.78            & --            & \textbf{100.00} & 41.78            & 58.93             & --    \\
- LG8B/GG2B                & OR      & 88.22            & --            & \textbf{100.00} & 88.22            & 93.74             & --    \\
- LG8B/GG2B                & AND     & 51.33            & --            & \textbf{100.00} & 51.33            & 67.84             & --    \\
- LG8B/SG2B                & OR      & 58.44            & --            & \textbf{100.00} & 58.44            & 73.77             & --    \\
- LG8B/SG2B                & AND     & 19.78            & --            & \textbf{100.00} & 19.78            & 33.02             & --    \\
- LG8B/WG7B                & OR      & 90.22            & --            & \textbf{100.00} & 90.22            & 94.86             & --    \\
- LG8B/WG7B                & AND     & 51.33            & --            & \textbf{100.00} & 51.33            & 67.84             & --    \\
- GG2B/SG2B                & OR      & 88.22            & --            & \textbf{100.00} & 88.22            & 93.74             & --    \\
- GG2B/SG2B                & AND     & 26.44            & --            & \textbf{100.00} & 26.44            & 41.83             & --    \\
- GG2B/WG7B                & OR      & 92.44            & --            & \textbf{100.00} & 92.44            & 96.07             & --    \\
- GG2B/WG7B                & AND     & 85.56            & --            & \textbf{100.00} & 85.56            & 92.22             & --    \\
- SG2B/WG7B                & OR      & 90.44            & --            & \textbf{100.00} & 90.44            & 94.98             & --    \\
- SG2B/WG7B                & AND     & 26.22            & --            & \textbf{100.00} & 26.22            & 41.55             & --    \\
- LG1B/LG8B/GG2B           & OR      & 92.89            & --            & \textbf{100.00} & 92.89            & 96.31             & --    \\
- LG1B/LG8B/GG2B           & AND     & 24.89            & --            & \textbf{100.00} & 24.89            & 39.86             & --    \\
- LG1B/LG8B/SG2B           & OR      & 76.89            & --            & \textbf{100.00} & 76.89            & 86.93             & --    \\
- LG1B/LG8B/SG2B           & AND     & \underline{9.78} & --            & \textbf{100.00} & \underline{9.78} & \underline{17.81} & --    \\
- LG1B/LG8B/WG7B           & OR      & 94.67            & --            & \textbf{100.00} & 94.67            & 97.26             & --    \\
- LG1B/LG8B/WG7B           & AND     & 25.11            & --            & \textbf{100.00} & 25.11            & 40.14             & --    \\
- LG1B/GG2B/SG2B           & OR      & 93.11            & --            & \textbf{100.00} & 93.11            & 96.43             & --    \\
- LG1B/GG2B/SG2B           & AND     & 12.44            & --            & \textbf{100.00} & 12.44            & 22.13             & --    \\
- LG1B/GG2B/WG7B           & OR      & \textbf{95.78}   & --            & \textbf{100.00} & \textbf{95.78}   & \textbf{97.84}    & --    \\
- LG1B/GG2B/WG7B           & AND     & 40.22            & --            & \textbf{100.00} & 40.22            & 57.37             & --    \\
- LG1B/SG2B/WG7B           & OR      & 94.89            & --            & \textbf{100.00} & 94.89            & 97.38             & --    \\
- LG1B/SG2B/WG7B           & AND     & 12.44            & --            & \textbf{100.00} & 12.44            & 22.13             & --    \\
- LG8B/GG2B/SG2B           & OR      & 88.44            & --            & \textbf{100.00} & 88.44            & 93.87             & --    \\
- LG8B/GG2B/SG2B           & AND     & 19.78            & --            & \textbf{100.00} & 19.78            & 33.02             & --    \\
- LG8B/GG2B/WG7B           & OR      & 92.44            & --            & \textbf{100.00} & 92.44            & 96.07             & --    \\
- LG8B/GG2B/WG7B           & AND     & 51.11            & --            & \textbf{100.00} & 51.11            & 67.65             & --    \\
- LG8B/SG2B/WG7B           & OR      & 90.44            & --            & \textbf{100.00} & 90.44            & 94.98             & --    \\
- LG8B/SG2B/WG7B           & AND     & 19.56            & --            & \textbf{100.00} & 19.56            & 32.71             & --    \\
- GG2B/SG2B/WG7B           & OR      & 92.44            & --            & \textbf{100.00} & 92.44            & 96.07             & --    \\
- GG2B/SG2B/WG7B           & AND     & 26.00            & --            & \textbf{100.00} & 26.00            & 41.27             & --    \\
- LG1B/LG8B/GG2B/SG2B      & OR      & 93.11            & --            & \textbf{100.00} & 93.11            & 96.43             & --    \\
- LG1B/LG8B/GG2B/SG2B      & AND     & \underline{9.78} & --            & \textbf{100.00} & \underline{9.78} & \underline{17.81} & --    \\
- LG1B/LG8B/GG2B/WG7B      & OR      & \textbf{95.78}   & --            & \textbf{100.00} & \textbf{95.78}   & \textbf{97.84}    & --    \\
- LG1B/LG8B/GG2B/WG7B      & AND     & 24.89            & --            & \textbf{100.00} & 24.89            & 39.86             & --    \\
- LG1B/LG8B/SG2B/WG7B      & OR      & 94.89            & --            & \textbf{100.00} & 94.89            & 97.38             & --    \\
- LG1B/LG8B/SG2B/WG7B      & AND     & \underline{9.78} & --            & \textbf{100.00} & \underline{9.78} & \underline{17.81} & --    \\
- LG1B/GG2B/SG2B/WG7B      & OR      & \textbf{95.78}   & --            & \textbf{100.00} & \textbf{95.78}   & \textbf{97.84}    & --    \\
- LG1B/GG2B/SG2B/WG7B      & AND     & 12.44            & --            & \textbf{100.00} & 12.44            & 22.13             & --    \\
- LG8B/GG2B/SG2B/WG7B      & OR      & 92.44            & --            & \textbf{100.00} & 92.44            & 96.07             & --    \\
- LG8B/GG2B/SG2B/WG7B      & AND     & 19.56            & --            & \textbf{100.00} & 19.56            & 32.71             & --    \\
- LG1B/LG8B/GG2B/SG2B/WG7B & OR      & \textbf{95.78}   & --            & \textbf{100.00} & \textbf{95.78}   & \textbf{97.84}    & --    \\
- LG1B/LG8B/GG2B/SG2B/WG7B & AND     & \underline{9.78} & --            & \textbf{100.00} & \underline{9.78} & \underline{17.81} & --    \\
+ LG1B                     & -       & 47.33             & --            & \textbf{100.00} & 47.33             & 64.25             & --    \\
+ GG2B                     & -       & 88.00             & --            & \textbf{100.00} & 88.00             & 93.62             & --    \\
+ SG2B                     & -       & 26.67             & --            & \textbf{100.00} & 26.67             & 42.11             & --    \\
+ WG7B                     & -       & 90.00             & --            & \textbf{100.00} & 90.00             & 94.74             & --    \\
+ LG8B                     & -       & 51.56             & --            & \textbf{100.00} & 51.56             & 68.04             & --    \\
+ LG1B/GG2B                & OR      & 92.89             & --            & \textbf{100.00} & 92.89             & 96.31             & --    \\
+ LG1B/GG2B                & AND     & 42.44             & --            & \textbf{100.00} & 42.44             & 59.59             & --    \\
+ LG1B/SG2B                & OR      & 60.44             & --            & \textbf{100.00} & 60.44             & 75.35             & --    \\
+ LG1B/SG2B                & AND     & 13.56             & --            & \textbf{100.00} & 13.56             & 23.87             & --    \\
+ LG1B/WG7B                & OR      & 95.11             & --            & \textbf{100.00} & 95.11             & 97.49             & --    \\
+ LG1B/WG7B                & AND     & 42.22             & --            & \textbf{100.00} & 42.22             & 59.38             & --    \\
+ LG1B/LG8B                & OR      & 74.67             & --            & \textbf{100.00} & 74.67             & 85.50             & --    \\
+ LG1B/LG8B                & AND     & 24.22             & --            & \textbf{100.00} & 24.22             & 39.00             & --    \\
+ GG2B/SG2B                & OR      & 88.22             & --            & \textbf{100.00} & 88.22             & 93.74             & --    \\
+ GG2B/SG2B                & AND     & 26.44             & --            & \textbf{100.00} & 26.44             & 41.83             & --    \\
+ GG2B/WG7B                & OR      & 92.44             & --            & \textbf{100.00} & 92.44             & 96.07             & --    \\
+ GG2B/WG7B                & AND     & 85.56             & --            & \textbf{100.00} & 85.56             & 92.22             & --    \\
+ GG2B/LG8B                & OR      & 88.22             & --            & \textbf{100.00} & 88.22             & 93.74             & --    \\
+ GG2B/LG8B                & AND     & 51.33             & --            & \textbf{100.00} & 51.33             & 67.84             & --    \\
+ SG2B/WG7B                & OR      & 90.44             & --            & \textbf{100.00} & 90.44             & 94.98             & --    \\
+ SG2B/WG7B                & AND     & 26.22             & --            & \textbf{100.00} & 26.22             & 41.55             & --    \\
+ SG2B/LG8B                & OR      & 58.44             & --            & \textbf{100.00} & 58.44             & 73.77             & --    \\
+ SG2B/LG8B                & AND     & 19.78             & --            & \textbf{100.00} & 19.78             & 33.02             & --    \\
+ WG7B/LG8B                & OR      & 90.22             & --            & \textbf{100.00} & 90.22             & 94.86             & --    \\
+ WG7B/LG8B                & AND     & 51.33             & --            & \textbf{100.00} & 51.33             & 67.84             & --    \\
+ LG1B/GG2B/SG2B           & OR      & 92.89             & --            & \textbf{100.00} & 92.89             & 96.31             & --    \\
+ LG1B/GG2B/SG2B           & AND     & 13.33             & --            & \textbf{100.00} & 13.33             & 23.53             & --    \\
+ LG1B/GG2B/WG7B           & OR      & \textbf{96.22}    & --            & \textbf{100.00} & \textbf{96.22}    & \textbf{98.07}    & --    \\
+ LG1B/GG2B/WG7B           & AND     & 41.11             & --            & \textbf{100.00} & 41.11             & 58.27             & --    \\
+ LG1B/GG2B/LG8B           & OR      & 93.11             & --            & \textbf{100.00} & 93.11             & 96.43             & --    \\
+ LG1B/GG2B/LG8B           & AND     & 24.22             & --            & \textbf{100.00} & 24.22             & 39.00             & --    \\
+ LG1B/SG2B/WG7B           & OR      & 95.56             & --            & \textbf{100.00} & 95.56             & 97.73             & --    \\
+ LG1B/SG2B/WG7B           & AND     & 13.56             & --            & \textbf{100.00} & 13.56             & 23.87             & --    \\
+ LG1B/SG2B/LG8B           & OR      & 78.00             & --            & \textbf{100.00} & 78.00             & 87.64             & --    \\
+ LG1B/SG2B/LG8B           & AND     & \underline{10.00} & --            & \textbf{100.00} & \underline{10.00} & \underline{18.18} & --    \\
+ LG1B/WG7B/LG8B           & OR      & 95.33             & --            & \textbf{100.00} & 95.33             & 97.61             & --    \\
+ LG1B/WG7B/LG8B           & AND     & 24.22             & --            & \textbf{100.00} & 24.22             & 39.00             & --    \\
+ GG2B/SG2B/WG7B           & OR      & 92.44             & --            & \textbf{100.00} & 92.44             & 96.07             & --    \\
+ GG2B/SG2B/WG7B           & AND     & 26.00             & --            & \textbf{100.00} & 26.00             & 41.27             & --    \\
+ GG2B/SG2B/LG8B           & OR      & 88.44             & --            & \textbf{100.00} & 88.44             & 93.87             & --    \\
+ GG2B/SG2B/LG8B           & AND     & 19.78             & --            & \textbf{100.00} & 19.78             & 33.02             & --    \\
+ GG2B/WG7B/LG8B           & OR      & 92.44             & --            & \textbf{100.00} & 92.44             & 96.07             & --    \\
+ GG2B/WG7B/LG8B           & AND     & 51.11             & --            & \textbf{100.00} & 51.11             & 67.65             & --    \\
+ SG2B/WG7B/LG8B           & OR      & 90.44             & --            & \textbf{100.00} & 90.44             & 94.98             & --    \\
+ SG2B/WG7B/LG8B           & AND     & 19.56             & --            & \textbf{100.00} & 19.56             & 32.71             & --    \\
+ LG1B/GG2B/SG2B/WG7B      & OR      & \textbf{96.22}    & --            & \textbf{100.00} & \textbf{96.22}    & \textbf{98.07}    & --    \\
+ LG1B/GG2B/SG2B/WG7B      & AND     & 13.33             & --            & \textbf{100.00} & 13.33             & 23.53             & --    \\
+ LG1B/GG2B/SG2B/LG8B      & OR      & 93.11             & --            & \textbf{100.00} & 93.11             & 96.43             & --    \\
+ LG1B/GG2B/SG2B/LG8B      & AND     & \underline{10.00} & --            & \textbf{100.00} & \underline{10.00} & \underline{18.18} & --    \\
+ LG1B/GG2B/WG7B/LG8B      & OR      & \textbf{96.22}    & --            & \textbf{100.00} & \textbf{96.22}    & \textbf{98.07}    & --    \\
+ LG1B/GG2B/WG7B/LG8B      & AND     & 24.22             & --            & \textbf{100.00} & 24.22             & 39.00             & --    \\
+ LG1B/SG2B/WG7B/LG8B      & OR      & 95.56             & --            & \textbf{100.00} & 95.56             & 97.73             & --    \\
+ LG1B/SG2B/WG7B/LG8B      & AND     & \underline{10.00} & --            & \textbf{100.00} & \underline{10.00} & \underline{18.18} & --    \\
+ GG2B/SG2B/WG7B/LG8B      & OR      & 92.44             & --            & \textbf{100.00} & 92.44             & 96.07             & --    \\
+ GG2B/SG2B/WG7B/LG8B      & AND     & 19.56             & --            & \textbf{100.00} & 19.56             & 32.71             & --    \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & OR      & \textbf{96.22}    & --            & \textbf{100.00} & \textbf{96.22}    & \textbf{98.07}    & --    \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & AND     & \underline{10.00} & --            & \textbf{100.00} & \underline{10.00} & \underline{18.18} & --    \\
 
 \end{longtable}
 }
@@ -439,63 +510,65 @@ Model & Logic & TP & TN & FP & FN & FPR & FNR \\
  
 \bottomrule
 \endlastfoot
-        LG1B                     & -       &  212 &    0 &    0 &  254 & --    & 54.51             \\
- LG8B                     & -       &  194 &    0 &    0 &  272 & --    & 58.37             \\
+
+LG1B                     & -       &  217 &    0 &    0 &  249 & --    & 53.43             \\
  GG2B                     & -       &  233 &    0 &    0 &  233 & --    & 50.00             \\
- SG2B                     & -       &  127 &    0 &    0 &  339 & --    & 72.75             \\
+ SG2B                     & -       &  126 &    0 &    0 &  340 & --    & 72.96             \\
  WG7B                     & -       &  215 &    0 &    0 &  251 & --    & 53.86             \\
- LG1B/LG8B                & OR      &  316 &    0 &    0 &  150 & --    & 32.19             \\
- LG1B/LG8B                & AND     &   90 &    0 &    0 &  376 & --    & 80.69             \\
- LG1B/GG2B                & OR      &  336 &    0 &    0 &  130 & --    & 27.90             \\
+ LG8B                     & -       &  195 &    0 &    0 &  271 & --    & 58.15             \\
+ LG1B/GG2B                & OR      &  341 &    0 &    0 &  125 & --    & 26.82             \\
  LG1B/GG2B                & AND     &  109 &    0 &    0 &  357 & --    & 76.61             \\
- LG1B/SG2B                & OR      &  284 &    0 &    0 &  182 & --    & 39.06             \\
- LG1B/SG2B                & AND     &   55 &    0 &    0 &  411 & --    & 88.20             \\
- LG1B/WG7B                & OR      &  326 &    0 &    0 &  140 & --    & 30.04             \\
- LG1B/WG7B                & AND     &  101 &    0 &    0 &  365 & --    & 78.33             \\
- LG8B/GG2B                & OR      &  302 &    0 &    0 &  164 & --    & 35.19             \\
- LG8B/GG2B                & AND     &  125 &    0 &    0 &  341 & --    & 73.18             \\
- LG8B/SG2B                & OR      &  274 &    0 &    0 &  192 & --    & 41.20             \\
- LG8B/SG2B                & AND     &   47 &    0 &    0 &  419 & --    & 89.91             \\
- LG8B/WG7B                & OR      &  292 &    0 &    0 &  174 & --    & 37.34             \\
- LG8B/WG7B                & AND     &  117 &    0 &    0 &  349 & --    & 74.89             \\
- GG2B/SG2B                & OR      &  239 &    0 &    0 &  227 & --    & 48.71             \\
- GG2B/SG2B                & AND     &  121 &    0 &    0 &  345 & --    & 74.03             \\
- GG2B/WG7B                & OR      &  269 &    0 &    0 &  197 & --    & 42.27             \\
- GG2B/WG7B                & AND     &  179 &    0 &    0 &  287 & --    & 61.59             \\
+ LG1B/SG2B                & OR      &  281 &    0 &    0 &  185 & --    & 39.70             \\
+ LG1B/SG2B                & AND     &   62 &    0 &    0 &  404 & --    & 86.70             \\
+ LG1B/WG7B                & OR      &  337 &    0 &    0 &  129 & --    & 27.68             \\
+ LG1B/WG7B                & AND     &   95 &    0 &    0 &  371 & --    & 79.61             \\
+ LG1B/LG8B                & OR      &  324 &    0 &    0 &  142 & --    & 30.47             \\
+ LG1B/LG8B                & AND     &   88 &    0 &    0 &  378 & --    & 81.12             \\
+ GG2B/SG2B                & OR      &  241 &    0 &    0 &  225 & --    & 48.28             \\
+ GG2B/SG2B                & AND     &  118 &    0 &    0 &  348 & --    & 74.68             \\
+ GG2B/WG7B                & OR      &  272 &    0 &    0 &  194 & --    & 41.63             \\
+ GG2B/WG7B                & AND     &  176 &    0 &    0 &  290 & --    & 62.23             \\
+ GG2B/LG8B                & OR      &  301 &    0 &    0 &  165 & --    & 35.41             \\
+ GG2B/LG8B                & AND     &  127 &    0 &    0 &  339 & --    & 72.75             \\
  SG2B/WG7B                & OR      &  239 &    0 &    0 &  227 & --    & 48.71             \\
- SG2B/WG7B                & AND     &  103 &    0 &    0 &  363 & --    & 77.90             \\
- LG1B/LG8B/GG2B           & OR      &  374 &    0 &    0 &   92 & --    & 19.74             \\
- LG1B/LG8B/GG2B           & AND     &   59 &    0 &    0 &  407 & --    & 87.34             \\
- LG1B/LG8B/SG2B           & OR      &  362 &    0 &    0 &  104 & --    & 22.32             \\
- LG1B/LG8B/SG2B           & AND     &   21 &    0 &    0 &  445 & --    & 95.49             \\
- LG1B/LG8B/WG7B           & OR      &  367 &    0 &    0 &   99 & --    & 21.24             \\
- LG1B/LG8B/WG7B           & AND     &   54 &    0 &    0 &  412 & --    & 88.41             \\
- LG1B/GG2B/SG2B           & OR      &  341 &    0 &    0 &  125 & --    & 26.82             \\
- LG1B/GG2B/SG2B           & AND     &   54 &    0 &    0 &  412 & --    & 88.41             \\
- LG1B/GG2B/WG7B           & OR      &  355 &    0 &    0 &  111 & --    & 23.82             \\
- LG1B/GG2B/WG7B           & AND     &   84 &    0 &    0 &  382 & --    & 81.97             \\
- LG1B/SG2B/WG7B           & OR      &  340 &    0 &    0 &  126 & --    & 27.04             \\
- LG1B/SG2B/WG7B           & AND     &   45 &    0 &    0 &  421 & --    & 90.34             \\
- LG8B/GG2B/SG2B           & OR      &  307 &    0 &    0 &  159 & --    & 34.12             \\
- LG8B/GG2B/SG2B           & AND     &   46 &    0 &    0 &  420 & --    & 90.13             \\
- LG8B/GG2B/WG7B           & OR      &  324 &    0 &    0 &  142 & --    & 30.47             \\
- LG8B/GG2B/WG7B           & AND     &  103 &    0 &    0 &  363 & --    & 77.90             \\
- LG8B/SG2B/WG7B           & OR      &  314 &    0 &    0 &  152 & --    & 32.62             \\
- LG8B/SG2B/WG7B           & AND     &   45 &    0 &    0 &  421 & --    & 90.34             \\
- GG2B/SG2B/WG7B           & OR      &  273 &    0 &    0 &  193 & --    & 41.42             \\
- GG2B/SG2B/WG7B           & AND     &  101 &    0 &    0 &  365 & --    & 78.33             \\
- LG1B/LG8B/GG2B/SG2B      & OR      &  379 &    0 &    0 &   87 & --    & 18.67             \\
- LG1B/LG8B/GG2B/SG2B      & AND     &   20 &    0 &    0 &  446 & --    & 95.71             \\
- LG1B/LG8B/GG2B/WG7B      & OR      &  386 &    0 &    0 &   80 & --    & 17.17             \\
- LG1B/LG8B/GG2B/WG7B      & AND     &   47 &    0 &    0 &  419 & --    & 89.91             \\
- LG1B/LG8B/SG2B/WG7B      & OR      &  381 &    0 &    0 &   85 & --    & 18.24             \\
- LG1B/LG8B/SG2B/WG7B      & AND     &   19 &    0 &    0 &  447 & --    & \underline{95.92} \\
- LG1B/GG2B/SG2B/WG7B      & OR      &  358 &    0 &    0 &  108 & --    & 23.18             \\
- LG1B/GG2B/SG2B/WG7B      & AND     &   45 &    0 &    0 &  421 & --    & 90.34             \\
- LG8B/GG2B/SG2B/WG7B      & OR      &  327 &    0 &    0 &  139 & --    & 29.83             \\
- LG8B/GG2B/SG2B/WG7B      & AND     &   45 &    0 &    0 &  421 & --    & 90.34             \\
- LG1B/LG8B/GG2B/SG2B/WG7B & OR      &  389 &    0 &    0 &   77 & --    & \textbf{16.52}    \\
- LG1B/LG8B/GG2B/SG2B/WG7B & AND     &   19 &    0 &    0 &  447 & --    & \underline{95.92} \\
+ SG2B/WG7B                & AND     &  102 &    0 &    0 &  364 & --    & 78.11             \\
+ SG2B/LG8B                & OR      &  275 &    0 &    0 &  191 & --    & 40.99             \\
+ SG2B/LG8B                & AND     &   46 &    0 &    0 &  420 & --    & 90.13             \\
+ WG7B/LG8B                & OR      &  293 &    0 &    0 &  173 & --    & 37.12             \\
+ WG7B/LG8B                & AND     &  117 &    0 &    0 &  349 & --    & 74.89             \\
+ LG1B/GG2B/SG2B           & OR      &  345 &    0 &    0 &  121 & --    & 25.97             \\
+ LG1B/GG2B/SG2B           & AND     &   58 &    0 &    0 &  408 & --    & 87.55             \\
+ LG1B/GG2B/WG7B           & OR      &  360 &    0 &    0 &  106 & --    & 22.75             \\
+ LG1B/GG2B/WG7B           & AND     &   75 &    0 &    0 &  391 & --    & 83.91             \\
+ LG1B/GG2B/LG8B           & OR      &  382 &    0 &    0 &   84 & --    & 18.03             \\
+ LG1B/GG2B/LG8B           & AND     &   61 &    0 &    0 &  405 & --    & 86.91             \\
+ LG1B/SG2B/WG7B           & OR      &  347 &    0 &    0 &  119 & --    & 25.54             \\
+ LG1B/SG2B/WG7B           & AND     &   48 &    0 &    0 &  418 & --    & 89.70             \\
+ LG1B/SG2B/LG8B           & OR      &  364 &    0 &    0 &  102 & --    & 21.89             \\
+ LG1B/SG2B/LG8B           & AND     &   22 &    0 &    0 &  444 & --    & 95.28             \\
+ LG1B/WG7B/LG8B           & OR      &  378 &    0 &    0 &   88 & --    & 18.88             \\
+ LG1B/WG7B/LG8B           & AND     &   51 &    0 &    0 &  415 & --    & 89.06             \\
+ GG2B/SG2B/WG7B           & OR      &  277 &    0 &    0 &  189 & --    & 40.56             \\
+ GG2B/SG2B/WG7B           & AND     &   99 &    0 &    0 &  367 & --    & 78.76             \\
+ GG2B/SG2B/LG8B           & OR      &  308 &    0 &    0 &  158 & --    & 33.91             \\
+ GG2B/SG2B/LG8B           & AND     &   45 &    0 &    0 &  421 & --    & 90.34             \\
+ GG2B/WG7B/LG8B           & OR      &  326 &    0 &    0 &  140 & --    & 30.04             \\
+ GG2B/WG7B/LG8B           & AND     &  103 &    0 &    0 &  363 & --    & 77.90             \\
+ SG2B/WG7B/LG8B           & OR      &  315 &    0 &    0 &  151 & --    & 32.40             \\
+ SG2B/WG7B/LG8B           & AND     &   44 &    0 &    0 &  422 & --    & 90.56             \\
+ LG1B/GG2B/SG2B/WG7B      & OR      &  363 &    0 &    0 &  103 & --    & 22.10             \\
+ LG1B/GG2B/SG2B/WG7B      & AND     &   46 &    0 &    0 &  420 & --    & 90.13             \\
+ LG1B/GG2B/SG2B/LG8B      & OR      &  385 &    0 &    0 &   81 & --    & 17.38             \\
+ LG1B/GG2B/SG2B/LG8B      & AND     &   22 &    0 &    0 &  444 & --    & 95.28             \\
+ LG1B/GG2B/WG7B/LG8B      & OR      &  393 &    0 &    0 &   73 & --    & 15.67             \\
+ LG1B/GG2B/WG7B/LG8B      & AND     &   45 &    0 &    0 &  421 & --    & 90.34             \\
+ LG1B/SG2B/WG7B/LG8B      & OR      &  387 &    0 &    0 &   79 & --    & 16.95             \\
+ LG1B/SG2B/WG7B/LG8B      & AND     &   21 &    0 &    0 &  445 & --    & \underline{95.49} \\
+ GG2B/SG2B/WG7B/LG8B      & OR      &  330 &    0 &    0 &  136 & --    & 29.18             \\
+ GG2B/SG2B/WG7B/LG8B      & AND     &   44 &    0 &    0 &  422 & --    & 90.56             \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & OR      &  395 &    0 &    0 &   71 & --    & \textbf{15.24}    \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & AND     &   21 &    0 &    0 &  445 & --    & \underline{95.49} \\
+
 \end{longtable}
 }
 
@@ -522,64 +595,64 @@ Model & Logic & Accuracy & Specificity & Precision & Recall & F1Score & MCC \\
  
 \bottomrule
 \endlastfoot
-        
-LG1B                     & -       & 45.49            & --            & \textbf{100.00} & 45.49            & 62.54            & --    \\
- LG8B                     & -       & 41.63            & --            & \textbf{100.00} & 41.63            & 58.79            & --    \\
+
+LG1B                     & -       & 46.57            & --            & \textbf{100.00} & 46.57            & 63.54            & --    \\
  GG2B                     & -       & 50.00            & --            & \textbf{100.00} & 50.00            & 66.67            & --    \\
- SG2B                     & -       & 27.25            & --            & \textbf{100.00} & 27.25            & 42.83            & --    \\
+ SG2B                     & -       & 27.04            & --            & \textbf{100.00} & 27.04            & 42.57            & --    \\
  WG7B                     & -       & 46.14            & --            & \textbf{100.00} & 46.14            & 63.14            & --    \\
- LG1B/LG8B                & OR      & 67.81            & --            & \textbf{100.00} & 67.81            & 80.82            & --    \\
- LG1B/LG8B                & AND     & 19.31            & --            & \textbf{100.00} & 19.31            & 32.37            & --    \\
- LG1B/GG2B                & OR      & 72.10            & --            & \textbf{100.00} & 72.10            & 83.79            & --    \\
+ LG8B                     & -       & 41.85            & --            & \textbf{100.00} & 41.85            & 59.00            & --    \\
+ LG1B/GG2B                & OR      & 73.18            & --            & \textbf{100.00} & 73.18            & 84.51            & --    \\
  LG1B/GG2B                & AND     & 23.39            & --            & \textbf{100.00} & 23.39            & 37.91            & --    \\
- LG1B/SG2B                & OR      & 60.94            & --            & \textbf{100.00} & 60.94            & 75.73            & --    \\
- LG1B/SG2B                & AND     & 11.80            & --            & \textbf{100.00} & 11.80            & 21.11            & --    \\
- LG1B/WG7B                & OR      & 69.96            & --            & \textbf{100.00} & 69.96            & 82.32            & --    \\
- LG1B/WG7B                & AND     & 21.67            & --            & \textbf{100.00} & 21.67            & 35.63            & --    \\
- LG8B/GG2B                & OR      & 64.81            & --            & \textbf{100.00} & 64.81            & 78.65            & --    \\
- LG8B/GG2B                & AND     & 26.82            & --            & \textbf{100.00} & 26.82            & 42.30            & --    \\
- LG8B/SG2B                & OR      & 58.80            & --            & \textbf{100.00} & 58.80            & 74.05            & --    \\
- LG8B/SG2B                & AND     & 10.09            & --            & \textbf{100.00} & 10.09            & 18.32            & --    \\
- LG8B/WG7B                & OR      & 62.66            & --            & \textbf{100.00} & 62.66            & 77.04            & --    \\
- LG8B/WG7B                & AND     & 25.11            & --            & \textbf{100.00} & 25.11            & 40.14            & --    \\
- GG2B/SG2B                & OR      & 51.29            & --            & \textbf{100.00} & 51.29            & 67.80            & --    \\
- GG2B/SG2B                & AND     & 25.97            & --            & \textbf{100.00} & 25.97            & 41.23            & --    \\
- GG2B/WG7B                & OR      & 57.73            & --            & \textbf{100.00} & 57.73            & 73.20            & --    \\
- GG2B/WG7B                & AND     & 38.41            & --            & \textbf{100.00} & 38.41            & 55.50            & --    \\
+ LG1B/SG2B                & OR      & 60.30            & --            & \textbf{100.00} & 60.30            & 75.23            & --    \\
+ LG1B/SG2B                & AND     & 13.30            & --            & \textbf{100.00} & 13.30            & 23.48            & --    \\
+ LG1B/WG7B                & OR      & 72.32            & --            & \textbf{100.00} & 72.32            & 83.94            & --    \\
+ LG1B/WG7B                & AND     & 20.39            & --            & \textbf{100.00} & 20.39            & 33.87            & --    \\
+ LG1B/LG8B                & OR      & 69.53            & --            & \textbf{100.00} & 69.53            & 82.03            & --    \\
+ LG1B/LG8B                & AND     & 18.88            & --            & \textbf{100.00} & 18.88            & 31.77            & --    \\
+ GG2B/SG2B                & OR      & 51.72            & --            & \textbf{100.00} & 51.72            & 68.18            & --    \\
+ GG2B/SG2B                & AND     & 25.32            & --            & \textbf{100.00} & 25.32            & 40.41            & --    \\
+ GG2B/WG7B                & OR      & 58.37            & --            & \textbf{100.00} & 58.37            & 73.71            & --    \\
+ GG2B/WG7B                & AND     & 37.77            & --            & \textbf{100.00} & 37.77            & 54.83            & --    \\
+ GG2B/LG8B                & OR      & 64.59            & --            & \textbf{100.00} & 64.59            & 78.49            & --    \\
+ GG2B/LG8B                & AND     & 27.25            & --            & \textbf{100.00} & 27.25            & 42.83            & --    \\
  SG2B/WG7B                & OR      & 51.29            & --            & \textbf{100.00} & 51.29            & 67.80            & --    \\
- SG2B/WG7B                & AND     & 22.10            & --            & \textbf{100.00} & 22.10            & 36.20            & --    \\
- LG1B/LG8B/GG2B           & OR      & 80.26            & --            & \textbf{100.00} & 80.26            & 89.05            & --    \\
- LG1B/LG8B/GG2B           & AND     & 12.66            & --            & \textbf{100.00} & 12.66            & 22.48            & --    \\
- LG1B/LG8B/SG2B           & OR      & 77.68            & --            & \textbf{100.00} & 77.68            & 87.44            & --    \\
- LG1B/LG8B/SG2B           & AND     & 4.51             & --            & \textbf{100.00} & 4.51             & 8.62             & --    \\
- LG1B/LG8B/WG7B           & OR      & 78.76            & --            & \textbf{100.00} & 78.76            & 88.12            & --    \\
- LG1B/LG8B/WG7B           & AND     & 11.59            & --            & \textbf{100.00} & 11.59            & 20.77            & --    \\
- LG1B/GG2B/SG2B           & OR      & 73.18            & --            & \textbf{100.00} & 73.18            & 84.51            & --    \\
- LG1B/GG2B/SG2B           & AND     & 11.59            & --            & \textbf{100.00} & 11.59            & 20.77            & --    \\
- LG1B/GG2B/WG7B           & OR      & 76.18            & --            & \textbf{100.00} & 76.18            & 86.48            & --    \\
- LG1B/GG2B/WG7B           & AND     & 18.03            & --            & \textbf{100.00} & 18.03            & 30.55            & --    \\
- LG1B/SG2B/WG7B           & OR      & 72.96            & --            & \textbf{100.00} & 72.96            & 84.37            & --    \\
- LG1B/SG2B/WG7B           & AND     & 9.66             & --            & \textbf{100.00} & 9.66             & 17.61            & --    \\
- LG8B/GG2B/SG2B           & OR      & 65.88            & --            & \textbf{100.00} & 65.88            & 79.43            & --    \\
- LG8B/GG2B/SG2B           & AND     & 9.87             & --            & \textbf{100.00} & 9.87             & 17.97            & --    \\
- LG8B/GG2B/WG7B           & OR      & 69.53            & --            & \textbf{100.00} & 69.53            & 82.03            & --    \\
- LG8B/GG2B/WG7B           & AND     & 22.10            & --            & \textbf{100.00} & 22.10            & 36.20            & --    \\
- LG8B/SG2B/WG7B           & OR      & 67.38            & --            & \textbf{100.00} & 67.38            & 80.51            & --    \\
- LG8B/SG2B/WG7B           & AND     & 9.66             & --            & \textbf{100.00} & 9.66             & 17.61            & --    \\
- GG2B/SG2B/WG7B           & OR      & 58.58            & --            & \textbf{100.00} & 58.58            & 73.88            & --    \\
- GG2B/SG2B/WG7B           & AND     & 21.67            & --            & \textbf{100.00} & 21.67            & 35.63            & --    \\
- LG1B/LG8B/GG2B/SG2B      & OR      & 81.33            & --            & \textbf{100.00} & 81.33            & 89.70            & --    \\
- LG1B/LG8B/GG2B/SG2B      & AND     & 4.29             & --            & \textbf{100.00} & 4.29             & 8.23             & --    \\
- LG1B/LG8B/GG2B/WG7B      & OR      & 82.83            & --            & \textbf{100.00} & 82.83            & 90.61            & --    \\
- LG1B/LG8B/GG2B/WG7B      & AND     & 10.09            & --            & \textbf{100.00} & 10.09            & 18.32            & --    \\
- LG1B/LG8B/SG2B/WG7B      & OR      & 81.76            & --            & \textbf{100.00} & 81.76            & 89.96            & --    \\
- LG1B/LG8B/SG2B/WG7B      & AND     & \underline{4.08} & --            & \textbf{100.00} & \underline{4.08} & \underline{7.84} & --    \\
- LG1B/GG2B/SG2B/WG7B      & OR      & 76.82            & --            & \textbf{100.00} & 76.82            & 86.89            & --    \\
- LG1B/GG2B/SG2B/WG7B      & AND     & 9.66             & --            & \textbf{100.00} & 9.66             & 17.61            & --    \\
- LG8B/GG2B/SG2B/WG7B      & OR      & 70.17            & --            & \textbf{100.00} & 70.17            & 82.47            & --    \\
- LG8B/GG2B/SG2B/WG7B      & AND     & 9.66             & --            & \textbf{100.00} & 9.66             & 17.61            & --    \\
- LG1B/LG8B/GG2B/SG2B/WG7B & OR      & \textbf{83.48}   & --            & \textbf{100.00} & \textbf{83.48}   & \textbf{90.99}   & --    \\
- LG1B/LG8B/GG2B/SG2B/WG7B & AND     & \underline{4.08} & --            & \textbf{100.00} & \underline{4.08} & \underline{7.84} & --    \\
+ SG2B/WG7B                & AND     & 21.89            & --            & \textbf{100.00} & 21.89            & 35.92            & --    \\
+ SG2B/LG8B                & OR      & 59.01            & --            & \textbf{100.00} & 59.01            & 74.22            & --    \\
+ SG2B/LG8B                & AND     & 9.87             & --            & \textbf{100.00} & 9.87             & 17.97            & --    \\
+ WG7B/LG8B                & OR      & 62.88            & --            & \textbf{100.00} & 62.88            & 77.21            & --    \\
+ WG7B/LG8B                & AND     & 25.11            & --            & \textbf{100.00} & 25.11            & 40.14            & --    \\
+ LG1B/GG2B/SG2B           & OR      & 74.03            & --            & \textbf{100.00} & 74.03            & 85.08            & --    \\
+ LG1B/GG2B/SG2B           & AND     & 12.45            & --            & \textbf{100.00} & 12.45            & 22.14            & --    \\
+ LG1B/GG2B/WG7B           & OR      & 77.25            & --            & \textbf{100.00} & 77.25            & 87.17            & --    \\
+ LG1B/GG2B/WG7B           & AND     & 16.09            & --            & \textbf{100.00} & 16.09            & 27.73            & --    \\
+ LG1B/GG2B/LG8B           & OR      & 81.97            & --            & \textbf{100.00} & 81.97            & 90.09            & --    \\
+ LG1B/GG2B/LG8B           & AND     & 13.09            & --            & \textbf{100.00} & 13.09            & 23.15            & --    \\
+ LG1B/SG2B/WG7B           & OR      & 74.46            & --            & \textbf{100.00} & 74.46            & 85.36            & --    \\
+ LG1B/SG2B/WG7B           & AND     & 10.30            & --            & \textbf{100.00} & 10.30            & 18.68            & --    \\
+ LG1B/SG2B/LG8B           & OR      & 78.11            & --            & \textbf{100.00} & 78.11            & 87.71            & --    \\
+ LG1B/SG2B/LG8B           & AND     & 4.72             & --            & \textbf{100.00} & 4.72             & 9.02             & --    \\
+ LG1B/WG7B/LG8B           & OR      & 81.12            & --            & \textbf{100.00} & 81.12            & 89.57            & --    \\
+ LG1B/WG7B/LG8B           & AND     & 10.94            & --            & \textbf{100.00} & 10.94            & 19.73            & --    \\
+ GG2B/SG2B/WG7B           & OR      & 59.44            & --            & \textbf{100.00} & 59.44            & 74.56            & --    \\
+ GG2B/SG2B/WG7B           & AND     & 21.24            & --            & \textbf{100.00} & 21.24            & 35.04            & --    \\
+ GG2B/SG2B/LG8B           & OR      & 66.09            & --            & \textbf{100.00} & 66.09            & 79.59            & --    \\
+ GG2B/SG2B/LG8B           & AND     & 9.66             & --            & \textbf{100.00} & 9.66             & 17.61            & --    \\
+ GG2B/WG7B/LG8B           & OR      & 69.96            & --            & \textbf{100.00} & 69.96            & 82.32            & --    \\
+ GG2B/WG7B/LG8B           & AND     & 22.10            & --            & \textbf{100.00} & 22.10            & 36.20            & --    \\
+ SG2B/WG7B/LG8B           & OR      & 67.60            & --            & \textbf{100.00} & 67.60            & 80.67            & --    \\
+ SG2B/WG7B/LG8B           & AND     & 9.44             & --            & \textbf{100.00} & 9.44             & 17.25            & --    \\
+ LG1B/GG2B/SG2B/WG7B      & OR      & 77.90            & --            & \textbf{100.00} & 77.90            & 87.58            & --    \\
+ LG1B/GG2B/SG2B/WG7B      & AND     & 9.87             & --            & \textbf{100.00} & 9.87             & 17.97            & --    \\
+ LG1B/GG2B/SG2B/LG8B      & OR      & 82.62            & --            & \textbf{100.00} & 82.62            & 90.48            & --    \\
+ LG1B/GG2B/SG2B/LG8B      & AND     & 4.72             & --            & \textbf{100.00} & 4.72             & 9.02             & --    \\
+ LG1B/GG2B/WG7B/LG8B      & OR      & 84.33            & --            & \textbf{100.00} & 84.33            & 91.50            & --    \\
+ LG1B/GG2B/WG7B/LG8B      & AND     & 9.66             & --            & \textbf{100.00} & 9.66             & 17.61            & --    \\
+ LG1B/SG2B/WG7B/LG8B      & OR      & 83.05            & --            & \textbf{100.00} & 83.05            & 90.74            & --    \\
+ LG1B/SG2B/WG7B/LG8B      & AND     & \underline{4.51} & --            & \textbf{100.00} & \underline{4.51} & \underline{8.62} & --    \\
+ GG2B/SG2B/WG7B/LG8B      & OR      & 70.82            & --            & \textbf{100.00} & 70.82            & 82.91            & --    \\
+ GG2B/SG2B/WG7B/LG8B      & AND     & 9.44             & --            & \textbf{100.00} & 9.44             & 17.25            & --    \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & OR      & \textbf{84.76}   & --            & \textbf{100.00} & \textbf{84.76}   & \textbf{91.75}   & --    \\
+ LG1B/GG2B/SG2B/WG7B/LG8B & AND     & \underline{4.51} & --            & \textbf{100.00} & \underline{4.51} & \underline{8.62} & --    \\
 
 \end{longtable}
 }
