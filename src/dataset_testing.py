@@ -14,8 +14,8 @@ PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
 # print(psb["train"].features)
 # print(psb["train"][0])
 
-# datasets: MedSafetyBench, XSTest, PatientSafetyBench (to do), JailbreakBench (to do), FACTS-med (to do?)
-#
+# datasets: MedSafetyBench, XSTest, PatientSafetyBench, JailbreakBench (to do), PolyGuard (to do), FACTS-med (to do?)
+
 models = {
     "LlamaGuard1B": {
         "setup": guardrail_models.LlamaGuard1BSetup,

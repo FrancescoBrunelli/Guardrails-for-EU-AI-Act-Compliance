@@ -127,7 +127,9 @@ def LlamaGuardInference(prompt, model, tokenizer):
         pad_token_id=0,
         return_dict_in_generate=True,
         output_scores=True,
-        do_sample=False
+        do_sample=False,
+        temperature = None,
+        top_p = None
     )
     # print("Done")
     generated_tokens = output.sequences[:, prompt_len:]
@@ -198,7 +200,9 @@ def GraniteGuardian2B(role, prompt, model, tokenizer):
             max_new_tokens=20,
             return_dict_in_generate=True,
             output_scores=True,
-            do_sample=False
+            do_sample=False,
+            temperature=None,
+            top_p=None
         )
 
     label, prob_of_risk = parse_output(output, input_len, nlogprobs, tokenizer, safe_token, unsafe_token)
@@ -288,7 +292,7 @@ def WildGuard7B(prompt, model, tokenizer):    # 17min
 
   model_input = instruction_format.format(prompt = prompt)
   tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False).to(model.device)
-  result = model.generate(**tokenized_input, max_new_tokens=32, output_scores=True, return_dict_in_generate=True, pad_token_id=tokenizer.eos_token_id, do_sample=False)
+  result = model.generate(**tokenized_input, max_new_tokens=32, output_scores=True, return_dict_in_generate=True, pad_token_id=tokenizer.eos_token_id, do_sample=False, temperature = None, top_p = None)
 
   '''
   for i, score in enumerate(result.scores):
