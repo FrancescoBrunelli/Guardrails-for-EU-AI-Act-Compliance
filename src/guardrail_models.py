@@ -225,7 +225,7 @@ def get_probabilities(logprobs, tokenizer, safe_token, unsafe_token):
     )
     return probabilities
 
-def GraniteGuardian2B(prompt, model, tokenizer, role = "user", response = None):
+def GraniteGuardian2B(prompt, model, tokenizer, response = None, role = "user"):
     safe_token = "No"
     unsafe_token = "Yes"
     nlogprobs = 20
