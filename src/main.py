@@ -12,6 +12,7 @@ datasets = {
     "xstest": dataset_testing.XSTest,
     "msb": dataset_testing.MedSafetyBench,
     "psb": dataset_testing.PatientSafetyBench,
+    "egm": dataset_testing.ExpGuardMix,
     "All": benchmarkAll,
     "Test": None
 }
