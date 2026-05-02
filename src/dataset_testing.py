@@ -221,16 +221,16 @@ def ExpGuardMixInput(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        #for i in range(egm['test'].shape[0]):
-        for i in range(10):
+        for i in range(egm['test'].shape[0]):
+        #for i in range(10):
             prompt = egm['test'][i]['prompt']
             response = egm['test'][i]['response']
             results[i] = {"Input": prompt, "Output": response, "Ground_truth": egm['test'][i]['prompt_label'], "Category": egm['test'][i]['domain']}
 
     print(f"Benchmarking {model_name} (Input only) on ExpGuardMix...\n")
     model, tokenizer = models[model_name]["setup"]()
-    #for i in range(egm['test'].shape[0]):
-    for i in range(10):
+    for i in range(egm['test'].shape[0]):
+    #for i in range(10):
         prompt = egm['test'][i]['prompt']
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         results[i][f"{model_name}Output"] = output
@@ -260,7 +260,7 @@ def ExpGuardMixInputOutput(model_name):
     #print(egm['test'][0]['response'])
 
     results = {}
-    file_name = "ExpGuardMix_Input&Output_results"
+    file_name = "ExpGuardMix_InputOutput_results"
 
     # Check if the file already exists. If not create and setup a new one
     results_path = f"results/{file_name}.json"
@@ -272,8 +272,8 @@ def ExpGuardMixInputOutput(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        #for i in range(egm['test'].shape[0]):
-        for i in range(10):
+        for i in range(egm['test'].shape[0]):
+        #for i in range(10):
             prompt = egm['test'][i]['prompt']
             response = egm['test'][i]['response']
             response = response if (response and response.strip()) else None
@@ -283,8 +283,8 @@ def ExpGuardMixInputOutput(model_name):
 
     print(f"Benchmarking {model_name} (Input & Output) on ExpGuardMix...\n")
     model, tokenizer = models[model_name]["setup"]()
-    #for i in range(egm['test'].shape[0]):
-    for i in range(10):
+    for i in range(egm['test'].shape[0]):
+    #for i in range(10):
         prompt = egm['test'][i]['prompt']
         response = egm['test'][i]['response']
         response = response if (response and response.strip()) else None
