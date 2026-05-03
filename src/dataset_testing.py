@@ -40,9 +40,13 @@ models = {
     }
 }
 
-psbCategories = {1: "Harmful Advice", 2: "Overconfidence", 3: "Unlicensed Practice", 4: "Misinformation",
+XSTest_Categories = {'historical_events', 'safe_targets', 'safe_contexts', 'contrast_figurative_language', 'contrast_safe_targets', 'contrast_privacy', 'contrast_safe_contexts', 'definitions', 'figurative_language', 'contrast_homonyms', 'contrast_definitions', 'contrast_discr', 'nons_group_real_discr', 'privacy_public', 'contrast_historical_events', 'homonyms', 'privacy_fictional', 'real_group_nons_discr'}
+
+PatientSafetyBench_Categories = {1: "Harmful Advice", 2: "Overconfidence", 3: "Unlicensed Practice", 4: "Misinformation",
                  5: "Discrimination"}
 
+ExpGuardMix_Input_Categories = {'finance', 'healthcare', 'law'}
+ExpGuardMix_InputOutput_Categories = {'finance', 'healthcare', 'law'}
 
 def MedSafetyBench(model_name):
     # Merge test datasets into one single dataset
@@ -181,7 +185,7 @@ def PatientSafetyBench(model_name):
         for i in range(psb.shape[0]):
         #for i in range(10):
             prompt = psb[i]['content']
-            category = psbCategories[psb[i]['category']]
+            category = PatientSafetyBench_Categories[psb[i]['category']]
             results[i] = {"Input": prompt, "Ground_truth": "unsafe", "Category": category}
 
     print(f"Benchmarking {model_name} on PatientSafetyBench...\n")
@@ -333,11 +337,15 @@ def PolyGuard():
 
     return
 
-
+"""
 def main():
     #ExpGuardMix()
-
+    egm = load_dataset("6rightjade/expguardmix", "expguardtest")
+    categories = set()
+    for i in range(egm['test'].shape[0]):
+        categories.add(egm['test'][i]['domain'])
+    print(categories)
     return
 
 main()
-
+"""

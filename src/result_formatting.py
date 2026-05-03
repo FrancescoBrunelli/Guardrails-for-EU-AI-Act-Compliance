@@ -8,7 +8,7 @@ headers1 = ['Model', 'Logic', 'TP', 'TN', 'FP', 'FN', 'FPR', 'FNR']
 headers2 = ['Model', 'Logic', 'Accuracy', 'Specificity', 'Precision', 'Recall', 'F1Score', 'MCC']
 
 def create_table(filename):
-    with open(f"results/{filename}.json", "r") as f:  # Load results stored in the .json file
+    with open(f"results/analysis_output/{filename}.json", "r") as f:  # Load results stored in the .json file
         results = [json.loads(line) for line in f if line.strip()]  # Due to the fact that the file contains a json object per line, instead of a single json
     #print(results[0].keys())
 
@@ -70,13 +70,46 @@ def printTables(dataset):
     print(table2)
     return
 
+def printAllTables():
+    datasets_single_models = ["XSTest(single)", "MedSafetyBench(single)", "PatientSafetyBench(single)", "ExpGuardMix_Input(single)", "ExpGuardMix_InputOutput(single)"]
+    datasets = ["XSTest", "MedSafetyBench", "PatientSafetyBench", "ExpGuardMix_Input", "ExpGuardMix_InputOutput"]
+    # Print all single-models tables
+    print("\n\t--- SINGLE-MODEL TABLES: ---")
+    for dataset in datasets_single_models:
+        printTables(dataset)
+
+    input("Press Enter to continue...")
+    os.system('clear')
+
+    print("\n\t--- SINGLE-MODEL PER-CATEGORY TABLES: ---")
+    # Print all per-category tables
+    for dataset in datasets:
+        path = f"results/analysis_output/{dataset}Categories/"
+        if os.path.exists(path):
+            for file in os.scandir(path):
+                if file.name.endswith(".json"):
+                    file = file.name.removesuffix("_score_results.json")
+                    file = f"{dataset}Categories/{file}"
+                    printTables(file)
+        input("Press Enter to continue...")
+        os.system('clear')
+
+    print("\n\t--- LONG TABLES: ---")
+    for dataset in datasets:
+        dataset = f"{dataset}"
+        printTables(dataset)
+    return
+
 def main():
-    datasets_single_models = ["XSTest(single)", "MedSafetyBench(single)", "PatientSafetyBench(single)"]
     #dataset = "XSTest"
     #dataset = "MedSafetyBench"
-    dataset = "PatientSafetyBench"
+    #dataset = "PatientSafetyBench"
+    #dataset = "ExpGuardMix_Input"
+    #dataset = "ExpGuardMix_InputOutput"
 
-    printTables(dataset)
+    #printTables(dataset)
+
+    printAllTables()
 
     """
     # Print all single-models tables
@@ -137,3 +170,35 @@ Model & Logic & TP & TN & FP & FN & FPR & FNR \\
     return
 
 main()
+
+"""
+\begin{table}[H]
+\centering
+\begin{tabular}{llrrrrrr}
+\toprule
+ Model          & Logic   &   TP &   TN &   FP &   FN &   FPR &   FNR \\
+\midrule
+
+# CONTENT HERE
+
+\bottomrule
+\end{tabular}
+\caption{\label{tab:widgets}XSTEST Table 1}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{llrrrrrr}
+\toprule
+ Model          & Logic   &   Accuracy &   Specificity &   Precision &   Recall &   F1Score &      MCC \\
+\midrule
+
+# CONTENT HERE
+
+\bottomrule
+\end{tabular}
+\caption{\label{tab:xstest2}XSTEST Table 2}
+\end{table}
+
+%--------------------------------------------------
+
+"""

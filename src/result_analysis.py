@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import json
 from itertools import combinations
+import dataset_testing
 
 models = {
     "LlamaGuard1B": "LG1B",
@@ -11,15 +12,18 @@ models = {
     "LlamaGuard8B": "LG8B"
 }
 #models = {"LlamaGuard": "LG1B", "GraniteGuardian": "GG2B", "ShieldGemma": "SG2B"}
-datasets = ["MedSafetyBench", "XSTest", "PatientSafetyBench"]
+datasets = ["MedSafetyBench", "XSTest", "PatientSafetyBench", "ExpGuardMix_Input", "ExpGuardMix_InputOutput"]
 
 def init():
     print("Initializing...")
+    if not os.path.exists("results/analysis_output"):
+        print("Directory results/analysis_output/ not found; creating directory")
+        os.mkdir("results/analysis_output")
     for dataset in datasets:
         file_name = f"{dataset}_score_results"
-        open(f"results/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
+        open(f"results/analysis_output/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
         file_name = f"{dataset}(single)_score_results"
-        open(f"results/{file_name}.json", "w").close()
+        open(f"results/analysis_output/{file_name}.json", "w").close()
     return
 
 def division(num, den):
@@ -72,7 +76,8 @@ def analyze(dataset, results, model, short_name, models_combined = 1, logic = No
               "Total_predictions": len(results), "TP": TP, "TN": TN, "FP": FP,
               "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
               "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
-    with open(f"results/{file_name}.json", "a") as f:
+    #print(f"Writing in results/analysis_output/{file_name}.json")
+    with open(f"results/analysis_output/{file_name}.json", "a") as f:
         json.dump(result, f)
         f.write("\n")
 
@@ -124,12 +129,55 @@ def analyze_combinations():
     print("End analysis")
     return
 
+def analyze_categories():
+    print("Analyzing all categories")
+    for dataset in datasets:
+        results_path = f"results/{dataset}_results.json"
+        if os.path.exists(results_path):
+            with open(f"results/{dataset}_results.json", "r") as f:  # Load results stored in the .json file
+                results = [json.loads(line) for line in f if
+                           line.strip()]  # Due to the fact that the file contains a json object per line, instead of a single json
+            if "Category" in results[0]:
+                if not os.path.exists(f"results/analysis_output/{dataset}Categories/"):
+                    print(f"Directory results/analysis_output/{dataset}Categories/ not found; creating directory")
+                    os.mkdir(f"results/analysis_output/{dataset}Categories")
+                categories = getattr(dataset_testing, f"{dataset}_Categories")
+                if isinstance(categories, set):
+                    for category in categories:
+                        file_name = f"{dataset}_{category}_score_results"
+                        open(f"results/analysis_output/{dataset}Categories/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
+                        filtered_results = []
+                        for i in range(len(results)):
+                            if category == results[i]["Category"]:
+                                filtered_results.append(results[i])
+                        for model in models:
+                            analyze(f"{dataset}Categories/{dataset}_{category}", results, model, models[model])
+                            #analyze(f"{dataset}(single)", results, model, models[model])
+                else:
+                    for category in categories.values():
+                        file_name = f"{dataset}_{category}_score_results"
+                        open(f"results/analysis_output/{dataset}Categories/{file_name}.json", "w").close()  # Create an empty .json file that eventually overwrites old results
+                        filtered_results = []
+                        for i in range(len(results)):
+                            if category == results[i]["Category"]:
+                                filtered_results.append(results[i])
+                        for model in models:
+                            analyze(f"{dataset}Categories/{dataset}_{category}", results, model, models[model])
+                            #analyze(f"{dataset}(single)", results, model, models[model])
+            else:
+                print("Category not found")
+    print("End analysis")
+
+    return
+
 def main():
     init()
 
     analyzeAll()
 
     analyze_combinations()
+
+    analyze_categories()
     return
 
 main()
