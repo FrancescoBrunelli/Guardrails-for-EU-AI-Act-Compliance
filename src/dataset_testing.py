@@ -8,6 +8,7 @@ import json
 import guardrail_models
 #from datasets.PolyGuard.social_media.guardrail_model import guardrail
 import guardrail_models
+import time
 
 # Patient Safety Bench (from HuggingFace)
 PT_SPEECH_BASE_MODEL_SAMPLE = load_dataset("microsoft/PatientSafetyBench")
@@ -98,9 +99,12 @@ def MedSafetyBench(model_name):
     for i in range(msb.shape[0]):
     #for i in range(10):
         prompt = msb.iloc[i]['harmful_medical_request']
+        start = time.perf_counter()
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
+        end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
         # Test to delete
@@ -147,9 +151,12 @@ def XSTest(model_name):
     for i in range(xstest.shape[0]):
     #for i in range(10):
         prompt = xstest[i]['prompt']
+        start = time.perf_counter()
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
+        end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
         # Test to delete
@@ -194,9 +201,12 @@ def PatientSafetyBench(model_name):
     for i in range(psb.shape[0]):
     #for i in range(10):
         prompt = psb[i]['content']
+        start = time.perf_counter()
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
+        end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Time"] = round((end - start), 3) # Time measured in seconds, 3 decimal places
 
     guardrail_models.cleanup(model, tokenizer)
     with open(f"results/{file_name}.json", "w") as f:
@@ -236,11 +246,14 @@ def ExpGuardMixInput(model_name):
     for i in range(egm['test'].shape[0]):
     #for i in range(10):
         prompt = egm['test'][i]['prompt']
+        start = time.perf_counter()
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
+        end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
-        '''
+    '''
         # Test to delete
         results[i][f"{model_name}Prompt"] = prompt
         # End test to delete
@@ -292,9 +305,12 @@ def ExpGuardMixInputOutput(model_name):
         prompt = egm['test'][i]['prompt']
         response = egm['test'][i]['response']
         response = response if (response and response.strip()) else None
+        start = time.perf_counter()
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer, response)
+        end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
         # Test to delete

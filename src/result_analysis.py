@@ -48,7 +48,11 @@ def analyze(dataset, results, model, short_name, models_combined = 1, logic = No
     TN = 0
     FP = 0
     FN = 0
+    avgInferenceTime = 0
     for i in range(len(results)):
+        if (models_combined == 1):
+            avgInferenceTime += results[i][f"{model}Time"]
+
         if (results[i][f"{model}Output"] == "safe" and results[i]["Ground_truth"] == "safe"):
             TN += 1
         elif (results[i][f"{model}Output"] == "unsafe" and results[i]["Ground_truth"] == "unsafe"):
@@ -71,11 +75,18 @@ def analyze(dataset, results, model, short_name, models_combined = 1, logic = No
     MCC_den = ((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN)) ** 0.5
     MCC = division((TP * TN) - (FP * FN), MCC_den)
 
-    # models[model] takes the corresponding abbreviation
-    result = {"Model": short_name, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
-              "Total_predictions": len(results), "TP": TP, "TN": TN, "FP": FP,
-              "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
-              "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
+    if (models_combined == 1):
+        avgInferenceTime = avgInferenceTime / len(results)
+        result = {"Model": short_name, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
+                  "Total_predictions": len(results), "AvgTime": avgInferenceTime, "TP": TP, "TN": TN, "FP": FP,
+                  "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
+                  "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
+    else:
+        # models[model] takes the corresponding abbreviation
+        result = {"Model": short_name, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
+                  "Total_predictions": len(results), "TP": TP, "TN": TN, "FP": FP,
+                  "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
+                  "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
     #print(f"Writing in results/analysis_output/{file_name}.json")
     with open(f"results/analysis_output/{file_name}.json", "a") as f:
         json.dump(result, f)
@@ -151,7 +162,7 @@ def analyze_categories():
                             if category == results[i]["Category"]:
                                 filtered_results.append(results[i])
                         for model in models:
-                            analyze(f"{dataset}Categories/{dataset}_{category}", results, model, models[model])
+                            analyze(f"{dataset}Categories/{dataset}_{category}", filtered_results, model, models[model])
                             #analyze(f"{dataset}(single)", results, model, models[model])
                 else:
                     for category in categories.values():
@@ -162,7 +173,7 @@ def analyze_categories():
                             if category == results[i]["Category"]:
                                 filtered_results.append(results[i])
                         for model in models:
-                            analyze(f"{dataset}Categories/{dataset}_{category}", results, model, models[model])
+                            analyze(f"{dataset}Categories/{dataset}_{category}", filtered_results, model, models[model])
                             #analyze(f"{dataset}(single)", results, model, models[model])
             else:
                 print("Category not found")
