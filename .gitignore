@@ -17,6 +17,7 @@ env/
 datasets/
 logs/
 src/__pycache__/
+tables/
 
 # HPC
 runtime.err
