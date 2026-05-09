@@ -78,13 +78,13 @@ def analyze(dataset, results, model, short_name, models_combined = 1, logic = No
     if (models_combined == 1):
         avgInferenceTime = avgInferenceTime / len(results)
         result = {"Model": short_name, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
-                  "Total_predictions": len(results), "AvgTime": avgInferenceTime, "TP": TP, "TN": TN, "FP": FP,
+                  "Total_predictions": len(results), "AvgTime": round(avgInferenceTime, 3), "TP": TP, "TN": TN, "FP": FP,
                   "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
                   "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
     else:
         # models[model] takes the corresponding abbreviation
         result = {"Model": short_name, "Dataset": dataset, "Models_combined": models_combined, "Logic": logic,
-                  "Total_predictions": len(results), "TP": TP, "TN": TN, "FP": FP,
+                  "Total_predictions": len(results), "AvgTime": None, "TP": TP, "TN": TN, "FP": FP,
                   "FN": FN, "FPR": FPR, "FNR": FNR, "Accuracy": accuracy, "Specificity": specificity,
                   "Precision": precision, "Recall": recall, "F1Score": F1Score, "MCC": MCC}
     #print(f"Writing in results/analysis_output/{file_name}.json")
@@ -120,6 +120,22 @@ def combine(combo, dataset, logic):
             results[i] = {"Models_combined": len(combo), "Logic": 'OR', "Ground_truth": data[i]["Ground_truth"],
                           f"{model_name}Output": output}
             # By doing so we adopt an OR logic: at least an unsafe to label the prompt as unsafe -> more restrictive
+    elif logic == "AVG":
+        for i in range(len(data)):
+            output = "safe"
+            safe_count = 0
+            unsafe_count = 0
+            for model in combo:
+                if data[i][f"{model}Output"] == "unsafe":
+                    unsafe_count += 1
+                else:
+                    safe_count += 1
+            if unsafe_count >= safe_count:
+                output = "unsafe"
+            results[i] = {"Models_combined": len(combo), "Logic": 'AVG', "Ground_truth": data[i]["Ground_truth"],
+                          f"{model_name}Output": output}
+            # By doing so we adopt an average vote: if half or more the combined models label the prompt as unsafe, the output will be unsafe
+
 
     #print(results[i])
     return results, model_name, short_name
@@ -137,6 +153,9 @@ def analyze_combinations():
 
                     results, model_name, short_name = combine(combo, dataset, 'AND')
                     analyze(dataset, results, model_name, short_name, len(combo), 'AND')
+
+                    results, model_name, short_name = combine(combo, dataset, 'AVG')
+                    analyze(dataset, results, model_name, short_name, len(combo), 'AVG')
     print("End analysis")
     return
 

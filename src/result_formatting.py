@@ -113,31 +113,31 @@ def create_table_single(filename):
         for result in results:
             table1.append(
                 [result['Model'], result['TP'], result['TN'], result['FP'], result['FN'], result['FPR'],
-                 result['FNR']])
+                 result['FNR'], result['AvgTime']])
             table2.append(
                 [result['Model'], result['Accuracy'], result['Specificity'], result['Precision'],
                  result['Recall'], result['F1Score'],
                  result['MCC']])
 
-        headers1 = ['Model', 'TP', 'TN', 'FP', 'FN', 'FPR', 'FNR']
+        headers1 = ['Model', 'TP', 'TN', 'FP', 'FN', 'FPR', 'FNR', 'AvgTime (s)']
         headers2 = ['Model', 'Accuracy', 'Specificity', 'Precision', 'Recall', 'F1Score', 'MCC']
     elif (check_TP and not check_TN):
         for result in results:
             table1.append(
-                [result['Model'], result['TP'], result['FN'], result['FNR']])
+                [result['Model'], result['TP'], result['FN'], result['FNR'], result['AvgTime']])
             table2.append(
                 [result['Model'], result['Accuracy'], result['Recall'], result['F1Score']])
 
-        headers1 = ['Model', 'TP', 'FN', 'FNR']
+        headers1 = ['Model', 'TP', 'FN', 'FNR', 'AvgTime (s)']
         headers2 = ['Model', 'Accuracy', 'Recall', 'F1Score']
     elif (not check_TP and check_TN):
         for result in results:
             table1.append(
-                [result['Model'], result['TN'], result['FP'], result['FPR']])
+                [result['Model'], result['TN'], result['FP'], result['FPR'], result['AvgTime']])
             table2.append(
                 [result['Model'], result['Accuracy'], result['Specificity'], result['F1Score']])
 
-        headers1 = ['Model', 'TN', 'FP', 'FPR']
+        headers1 = ['Model', 'TN', 'FP', 'FPR', 'AvgTime (s)']
         headers2 = ['Model', 'Accuracy', 'Specificity', 'F1Score']
     else:
         print("Error in checking the number of TPs and TNs")
