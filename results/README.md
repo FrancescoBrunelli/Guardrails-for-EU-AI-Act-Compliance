@@ -24,12 +24,12 @@ There are three types of analyzed outputs:
 2. **Combined analysis files**  
 	- Files without `(single)` include both:  
 		- Individual model evaluations  
-		- Ensemble/combined model evaluations using AND/OR/AVG logic  
+		- Ensemble/combined model evaluations using `AND` / `OR` / `AVG` logic  
 	- Example:  
-		- `XSTest_score_results.json`  
+		- `XSTest_score_results.json`
   
-3. **Category-level analysis folders**  
-	- Folders ending with `Categories/` contain per-category evaluation metrics.  
+3. **Category-level analysis files**
+	- Located inside the `Categories/` folder, these files contain per-category evaluation metrics.  
 	- These analyses are generated only for single-model evaluations.  
 	- Example:  
 		- `XSTestCategories/`
@@ -53,6 +53,8 @@ Each analyzed entry contains:
 - Recall
 - F1 Score
 - Matthews Correlation Coefficient (MCC)
+
+**Note:** some metrics may be N/A depending on the dataset used (see [datasets](../src/README.md#datasets))
 
 ---
 ## Directory Structure
