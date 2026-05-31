@@ -69,6 +69,13 @@ A list of available datasets and models, along with their CLI identifiers, is pr
 **Note:** These identifiers are used as CLI arguments in `main.py`
 ## Notes
 - It is recommended to run all scripts from the project root directory
+- In order to run all benchmarks, it is necessary to have a Hugging Face account with access to all required models and datasets (e.g., LlamaGuard models, XSTest dataset, etc.)
+- Authenticate your Hugging Face account by running:
+
+``` sh
+huggingface-cli login
+```
+
 - **Outputs:** a `.json` format inside the `results/` folder containing, for each dataset's entry
 	-  Input prompt
 	- Output response (e.g., for the ExpGuardMix dataset)
