@@ -66,6 +66,7 @@ A list of available datasets and models, along with their CLI identifiers, is pr
 | ShieldGemma     | 2B         | ShieldGemma2B     |
 | WildGuard       | 7B         | WildGuard7B       |
 | LlamaGuard      | 8B         | LlamaGuard8B      |
+
 **Note:** These identifiers are used as CLI arguments in `main.py`
 ## Notes
 - It is recommended to run all scripts from the project root directory
