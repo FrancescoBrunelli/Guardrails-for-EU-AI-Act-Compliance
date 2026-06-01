@@ -123,6 +123,7 @@ To change the amount of CPUs requested by the job when running in batch mode (vi
 ## Cluster-specific notes
 **Modules to load:**
 If you are using a virtual environment, activate it with:
+
 ``` sh
 source envs/llm-env/bin/activate
 ```
@@ -133,3 +134,7 @@ source envs/llm-env/bin/activate
 - **Max concurrent jobs per user in queue:** 30
 - **Max concurrent jobs per user in execution:** 30
 - **Max wall time:** 7h 59min
+
+---
+
+> **Disclaimer:** This repository is intended for research and benchmarking purposes only. Results may vary depending on model versions, dataset versions, and evaluation settings, and should not be interpreted as absolute safety guarantees.

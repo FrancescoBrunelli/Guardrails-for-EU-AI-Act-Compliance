@@ -51,21 +51,21 @@ In order to run the benchmarks, the program needs to receive as input the name o
 A list of available datasets and models, along with their CLI identifiers, is provided below.
 ### Datasets
 
-| Dataset Name       | CLI Name |
-| ------------------ | -------- |
-| XSTest             | xstest   |
-| MedSafetyBench     | msb      |
-| PatientSafetyBench | psb      |
-| ExpGuardMix        | egm      |
+| Dataset Name                                                                       | CLI Name |
+| ---------------------------------------------------------------------------------- | -------- |
+| [XSTest](https://huggingface.co/datasets/walledai/XSTest)                          | xstest   |
+| [MedSafetyBench](https://github.com/AI4LIFE-GROUP/med-safety-bench)                | msb      |
+| [PatientSafetyBench](https://huggingface.co/datasets/microsoft/PatientSafetyBench) | psb      |
+| [ExpGuardMix](https://huggingface.co/datasets/6rightjade/expguardmix)              | egm      |
 ### Models
 
-| Model           | Parameters | CLI Name          |
-| --------------- | ---------- | ----------------- |
-| LlamaGuard      | 1B         | LlamaGuard1B      |
-| GraniteGuardian | 2B         | GraniteGuardian2B |
-| ShieldGemma     | 2B         | ShieldGemma2B     |
-| WildGuard       | 7B         | WildGuard7B       |
-| LlamaGuard      | 8B         | LlamaGuard8B      |
+| Model           | Developed By | Parameters | CLI Name                                                                        |
+| --------------- | ------------ | ---------- | ------------------------------------------------------------------------------- |
+| LlamaGuard      | Meta         | 1B         | [LlamaGuard1B](https://huggingface.co/meta-llama/Llama-Guard-3-1B)              |
+| GraniteGuardian | IBM          | 2B         | [GraniteGuardian2B](https://huggingface.co/ibm-granite/granite-guardian-3.1-2b) |
+| ShieldGemma     | Google       | 2B         | [ShieldGemma2B](https://huggingface.co/google/shieldgemma-2b)                   |
+| WildGuard       | allenai      | 7B         | [WildGuard7B](https://huggingface.co/allenai/wildguard)                         |
+| LlamaGuard      | Meta         | 8B         | [LlamaGuard8B](https://huggingface.co/meta-llama/Llama-Guard-3-8B)              |
 
 **Note:** These identifiers are used as CLI arguments in `main.py`
 ## Notes
@@ -91,6 +91,7 @@ huggingface-cli login
 - PyTorch: `2.7.1 (CUDA 11.8)`
 - Transformers: `4.57.6`
 ## Example Usage
+
 ``` sh
 # Example run benchmarking LlamaGuard8B on XSTest dataset
 python3 src/main.py xstest LlamaGuard8B
