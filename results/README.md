@@ -13,7 +13,7 @@ Each raw result file, named as `<dataset_name>_results.json`, contains:
 	- <model_name>Time: inference time in seconds
 
 #### Analyzed data files:
-The `analyzed_output/` folder contains aggregated evaluation metrics computed from the raw results.
+The `analysis_output/` folder contains aggregated evaluation metrics computed from the raw results.
 
 There are three types of analyzed outputs:
 1. **Single-model analysis files**  
@@ -35,7 +35,7 @@ There are three types of analyzed outputs:
 		- `XSTestCategories/`
 
 Each analyzed entry contains:
-- Compressed model name (see [legend](../README.md#legend))
+- Compressed model name (see [models](../src/README.md#models))
 - Dataset used
 - Number of models combined together (`1` for single-model evaluation)
 - Ensemble logic: `AND` / `OR` / `AVG` (`null` for single models)
