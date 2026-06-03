@@ -24,3 +24,6 @@ tables/
 runtime.err
 runtime.out
 
+# Other
+scripts/plot.py
+
