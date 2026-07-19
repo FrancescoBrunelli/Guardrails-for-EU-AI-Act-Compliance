@@ -372,6 +372,10 @@ def WildGuardMix(model_name):
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
+        # Test to delete
+        results[i][f"{model_name}Prompt"] = prompt
+        results[i][f"{model_name}Response"] = response
+        # End test to delete
 
     guardrail_models.cleanup(model, tokenizer)
 
