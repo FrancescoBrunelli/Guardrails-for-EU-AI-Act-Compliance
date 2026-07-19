@@ -351,8 +351,8 @@ def WildGuardMix(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        #for i in range(wgm.shape[0]):
-        for i in range(10):
+        for i in range(wgm.shape[0]):
+        #for i in range(10):
             prompt = wgm[i]['prompt']
             response = wgm[i]['response']
             #response = response if (response and response.strip()) else None
@@ -361,8 +361,8 @@ def WildGuardMix(model_name):
 
     print(f"Benchmarking {model_name} on WildGuardMix...\n")
     model, tokenizer = models[model_name]["setup"]()
-    #for i in range(wgm.shape[0]):
-    for i in range(10):
+    for i in range(wgm.shape[0]):
+    #for i in range(10):
         prompt = wgm[i]['prompt']
         response = wgm[i]['response']
         #response = response if (response and response.strip()) else None
@@ -372,10 +372,13 @@ def WildGuardMix(model_name):
         results[i][f"{model_name}Output"] = output
         results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
+
+        '''
         # Test to delete
         results[i][f"{model_name}Prompt"] = prompt
         results[i][f"{model_name}Response"] = response
         # End test to delete
+        '''
 
     guardrail_models.cleanup(model, tokenizer)
 
