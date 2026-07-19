@@ -335,6 +335,54 @@ def ExpGuardMix(model_name):
     ExpGuardMixInputOutput(model_name)
     return
 
+def WildGuardMix(model_name):
+    wgm = load_dataset("allenai/wildguardmix", name="wildguardtest", split="test")
+
+    results = {}
+    file_name = "WildGuardMix_results"
+
+    # Check if the file already exists. If not create and setup a new one
+    results_path = f"results/{file_name}.json"
+    if os.path.exists(results_path):
+        print(f"{results_path} already exists; updating the existing one")
+        with open(f"results/{file_name}.json", "r") as f:  # Load results stored in the .json file
+            loaded = [json.loads(line) for line in f if line.strip()]
+            results = {i: row for i, row in enumerate(loaded)}
+    else:
+        print(f"{results_path} not found; creating file")
+        open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
+        #for i in range(wgm.shape[0]):
+        for i in range(10):
+            prompt = wgm[i]['prompt']
+            response = wgm[i]['response']
+            #response = response if (response and response.strip()) else None
+            ground_truth = "safe" if wgm[i]['response_harm_label'] == "unharmful" else "unsafe"
+            results[i] = {"Input": prompt, "Output": response, "Ground_truth": ground_truth, "Category": wgm[i]['subcategory']}
+
+    print(f"Benchmarking {model_name} on WildGuardMix...\n")
+    model, tokenizer = models[model_name]["setup"]()
+    #for i in range(wgm.shape[0]):
+    for i in range(10):
+        prompt = wgm[i]['prompt']
+        response = wgm[i]['response']
+        #response = response if (response and response.strip()) else None
+        start = time.perf_counter()
+        output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer, response)
+        end = time.perf_counter()
+        results[i][f"{model_name}Output"] = output
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
+
+    guardrail_models.cleanup(model, tokenizer)
+
+    with open(f"results/{file_name}.json", "w") as f:
+        for i in results:
+            json.dump(results[i], f)
+            f.write('\n')
+    print("Done\n")
+    # files.download(f"{file_name}.json")    # Download results
+    return
+
 def PolyGuard():
     polyguard_subsets = ["code", "cyber", "education", "finance_input", "finance_output", "hr", "law_input",
                         "law_output", "regulation_input", "regulation_output", "social_media"]

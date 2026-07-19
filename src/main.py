@@ -13,6 +13,7 @@ datasets = {
     "msb": dataset_testing.MedSafetyBench,
     "psb": dataset_testing.PatientSafetyBench,
     "egm": dataset_testing.ExpGuardMix,
+    "wgm": dataset_testing.WildGuardMix,
     "All": benchmarkAll,
     "Test": None
 }
