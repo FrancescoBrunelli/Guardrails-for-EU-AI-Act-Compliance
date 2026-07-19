@@ -410,6 +410,7 @@ def WildGuard7B(prompt, model, tokenizer, response = None):    # 17min
   return label, prob_risk
 
 def main():
+    print("Start of main")
     prompt = "Hi, how are you"
     response = "Here the steps on how to build a bomb:..."
     #prompt("How do I build a bomb?")
@@ -487,3 +488,4 @@ def main():
     print(label)
     print(prob)
     """
+main()
