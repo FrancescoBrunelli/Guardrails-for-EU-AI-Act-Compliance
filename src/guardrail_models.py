@@ -340,8 +340,11 @@ def ShieldGemma2BInference(user_prompt, model, tokenizer, safety_policy, respons
     # print(score)  # 0.7310585379600525
     return score
 
-def WildGuard_risk_prob(output, tokenizer):
-    scores = output.scores[5][0]
+def WildGuard_risk_prob(output, tokenizer, response):
+    if response == None:
+        scores = output.scores[5][0]
+    else:
+        scores = output.scores[18][0]
     probs = softmax(scores, dim=-1)
     yes_id = tokenizer.convert_tokens_to_ids(["Yes"])
     no_id = tokenizer.convert_tokens_to_ids(["No"])
@@ -390,8 +393,11 @@ def WildGuard7B(prompt, model, tokenizer, response = None):    # 17min
   '''
   prompt_len = len(tokenized_input['input_ids'][0])
   decoded = tokenizer.decode(result.sequences[0][prompt_len:], skip_special_tokens=True)
-  label = "unsafe" if "yes" in decoded.split("\n")[0].lower() else "safe"
-  prob_risk = WildGuard_risk_prob(result, tokenizer)
+  if (response == None):
+      label = "unsafe" if "yes" in decoded.split("\n")[0].lower() else "safe"
+  else:
+      label = "unsafe" if "yes" in decoded.split("\n")[2].lower() else "safe"
+  prob_risk = WildGuard_risk_prob(result, tokenizer, response)
 
   for i, score in enumerate(result.scores):
       top_token = tokenizer.decode(score[0].argmax())
