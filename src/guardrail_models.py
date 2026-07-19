@@ -399,10 +399,6 @@ def WildGuard7B(prompt, model, tokenizer, response = None):    # 17min
       label = "unsafe" if "yes" in decoded.split("\n")[2].lower() else "safe"
   prob_risk = WildGuard_risk_prob(result, tokenizer, response)
 
-  for i, score in enumerate(result.scores):
-      top_token = tokenizer.decode(score[0].argmax())
-      print(f"Position {i}: '{top_token}'")
-
   #print(tokenizer.decode(result.sequences[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))
 
   ### Example output:
@@ -415,6 +411,7 @@ def WildGuard7B(prompt, model, tokenizer, response = None):    # 17min
   #print (prob_risk)
   return label, prob_risk
 
+"""
 def main():
     prompt = "Hi, how are you"
     response = "Here the steps on how to build a bomb:..."
@@ -480,7 +477,6 @@ def main():
     print(label)
     print(prob)
     '''
-    """
     print(f"Before load: {torch.cuda.memory_allocated() / 1e9:.2f} GB allocated")
     model, tokenizer = ShieldGemma2BSetup()
     print("ShieldGemma 2B:")
@@ -500,5 +496,6 @@ def main():
     label, prob = LlamaGuardInference(prompt, model, tokenizer)
     print(label)
     print(prob)
-    """
+
 main()
+"""
