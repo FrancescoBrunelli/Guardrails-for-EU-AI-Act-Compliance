@@ -49,6 +49,24 @@ PatientSafetyBench_Categories = {1: "Harmful Advice", 2: "Overconfidence", 3: "U
 ExpGuardMix_Input_Categories = {'finance', 'healthcare', 'law'}
 ExpGuardMix_InputOutput_Categories = {'finance', 'healthcare', 'law'}
 
+WildGuardMix_Categories = {
+    "violence_and_physical_harm",
+    "fraud_assisting_illegal_activities",
+    "private_information_individual",
+    "defamation_encouraging_unethical_or_unsafe_actions",
+    "social_stereotypes_and_unfair_discrimination",
+    "others",
+    "toxic_language_hate_speech",
+    "sensitive_information_organization_government",
+    "copyright_violations",
+    "mental_health_over-reliance_crisis",
+    "benign",
+    "causing_material_harm_by_disseminating_misinformation",
+    "disseminating_false_or_misleading_information_encouraging_disinformation_campaigns",
+    "cyberattack",
+    "sexual_content"
+}
+
 def MedSafetyBench(model_name):
     # Merge test datasets into one single dataset
     path = "datasets/med-safety-bench/datasets/test/gpt4"
@@ -351,8 +369,8 @@ def WildGuardMix(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        for i in range(wgm.shape[0]):
-        #for i in range(10):
+        #for i in range(wgm.shape[0]):
+        for i in range(5):
             prompt = wgm[i]['prompt']
             response = wgm[i]['response']
             #response = response if (response and response.strip()) else None
@@ -361,8 +379,8 @@ def WildGuardMix(model_name):
 
     print(f"Benchmarking {model_name} on WildGuardMix...\n")
     model, tokenizer = models[model_name]["setup"]()
-    for i in range(wgm.shape[0]):
-    #for i in range(10):
+    #for i in range(wgm.shape[0]):
+    for i in range(5):
         prompt = wgm[i]['prompt']
         response = wgm[i]['response']
         #response = response if (response and response.strip()) else None

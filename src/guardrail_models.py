@@ -405,6 +405,7 @@ def WildGuard7B(prompt, model, tokenizer, response = None):    # 17min
       #label = "unsafe" if "yes" in decoded.split("\n")[2].lower() else "safe"
       lines = decoded.split("\n")
       label = "unsafe" if (len(lines) > 2 and "yes" in lines[2].lower()) else "Failed"
+      print(f"prompt: {prompt}\n === \nn_lines={len(lines)}\n{repr(decoded)}")
   prob_risk = WildGuard_risk_prob(result, tokenizer, response)
 
   #print(tokenizer.decode(result.sequences[0][len(tokenized_input['input_ids'][0]):], skip_special_tokens=True))

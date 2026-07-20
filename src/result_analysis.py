@@ -12,7 +12,7 @@ models = {
     "LlamaGuard8B": "LG8B"
 }
 #models = {"LlamaGuard": "LG1B", "GraniteGuardian": "GG2B", "ShieldGemma": "SG2B"}
-datasets = ["MedSafetyBench", "XSTest", "PatientSafetyBench", "ExpGuardMix_Input", "ExpGuardMix_InputOutput"]
+datasets = ["MedSafetyBench", "XSTest", "PatientSafetyBench", "ExpGuardMix_Input", "ExpGuardMix_InputOutput", "WildGuardMix"]
 
 def init():
     print("Initializing...")
