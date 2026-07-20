@@ -103,7 +103,7 @@ def MedSafetyBench(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
-        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3) if prob_of_risk is not None else None
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
@@ -155,7 +155,7 @@ def XSTest(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
-        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3) if prob_of_risk is not None else None
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
@@ -205,7 +205,7 @@ def PatientSafetyBench(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
-        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3) if prob_of_risk is not None else None
         results[i][f"{model_name}Time"] = round((end - start), 3) # Time measured in seconds, 3 decimal places
 
     guardrail_models.cleanup(model, tokenizer)
@@ -250,7 +250,7 @@ def ExpGuardMixInput(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer)
         end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
-        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3) if prob_of_risk is not None else None
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
     '''
@@ -309,7 +309,7 @@ def ExpGuardMixInputOutput(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer, response)
         end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
-        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3) if prob_of_risk is not None else None
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
@@ -370,7 +370,7 @@ def WildGuardMix(model_name):
         output, prob_of_risk = models[model_name]["inference"](prompt, model, tokenizer, response)
         end = time.perf_counter()
         results[i][f"{model_name}Output"] = output
-        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3)
+        results[i][f"{model_name}Prob"] = round(prob_of_risk, 3) if prob_of_risk is not None else None
         results[i][f"{model_name}Time"] = round((end - start), 3)  # Time measured in seconds, 3 decimal places
 
         '''
