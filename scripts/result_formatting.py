@@ -266,8 +266,8 @@ def generate_latex_table(content, headers, caption, label, long=False):
     return table
 
 def printAllTables():
-    datasets_single_models = ["XSTest(single)", "MedSafetyBench(single)", "PatientSafetyBench(single)", "ExpGuardMix_Input(single)", "ExpGuardMix_InputOutput(single)"]
-    datasets = ["XSTest", "MedSafetyBench", "PatientSafetyBench", "ExpGuardMix_Input", "ExpGuardMix_InputOutput"]
+    datasets_single_models = ["XSTest(single)", "MedSafetyBench(single)", "PatientSafetyBench(single)", "ExpGuardMix_Input(single)", "ExpGuardMix_InputOutput(single)", "WildGuardMix(single)"]
+    datasets = ["XSTest", "MedSafetyBench", "PatientSafetyBench", "ExpGuardMix_Input", "ExpGuardMix_InputOutput", "WildGuardMix"]
     # Print all single-models tables
     print("\n\t--- SINGLE-MODEL TABLES: ---")
     for dataset in datasets_single_models:
