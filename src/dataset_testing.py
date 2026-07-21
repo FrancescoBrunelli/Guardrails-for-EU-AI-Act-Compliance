@@ -312,8 +312,9 @@ def ExpGuardMixInputOutput(model_name):
             prompt = egm['test'][i]['prompt']
             response = egm['test'][i]['response']
             response = response if (response and response.strip()) else None
-            response_label = egm['test'][i]['response_label'] if response is not None else "safe"
-            ground_truth = "safe" if (egm['test'][i]['prompt_label'] == "safe" and response_label == "safe") else "unsafe"
+            #response_label = egm['test'][i]['response_label'] if response is not None else "safe"
+            #ground_truth = "safe" if (egm['test'][i]['prompt_label'] == "safe" and response_label == "safe") else "unsafe"
+            ground_truth = egm['test'][i]['response_label'] if response is not None else egm['test'][i]['prompt_label']
             results[i] = {"Input": prompt, "Output": response, "Ground_truth": ground_truth, "Category": egm['test'][i]['domain']}
 
     print(f"Benchmarking {model_name} (Input & Output) on ExpGuardMix...\n")
