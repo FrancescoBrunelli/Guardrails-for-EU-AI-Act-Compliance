@@ -399,11 +399,11 @@ def WildGuard7B(prompt, model, tokenizer, response = None):    # 17min
   tokenized_input = tokenizer([model_input], return_tensors='pt', add_special_tokens=False).to(model.device)
   result = model.generate(**tokenized_input, max_new_tokens=32, output_scores=True, return_dict_in_generate=True, pad_token_id=tokenizer.eos_token_id, do_sample=False, temperature = None, top_p = None)
 
-  #'''
+  '''
   for i, score in enumerate(result.scores):
     top_token = tokenizer.decode(score[0].argmax())
     print(f"Position {i}: '{top_token}'")
-  #'''
+  '''
   prompt_len = len(tokenized_input['input_ids'][0])
   decoded = tokenizer.decode(result.sequences[0][prompt_len:], skip_special_tokens=True)
   if (response == None):
