@@ -370,8 +370,8 @@ def WildGuardMix(model_name):
     else:
         print(f"{results_path} not found; creating file")
         open(f"results/{file_name}.json", "w").close()  # Create an empty .json file
-        #for i in range(wgm.shape[0]):
-        for i in range(10):
+        for i in range(wgm.shape[0]):
+        #for i in range(10):
             prompt = wgm[i]['prompt']
             response = wgm[i]['response']
             #response = response if (response and response.strip()) else None
@@ -380,8 +380,8 @@ def WildGuardMix(model_name):
 
     print(f"Benchmarking {model_name} on WildGuardMix...\n")
     model, tokenizer = models[model_name]["setup"]()
-    #for i in range(wgm.shape[0]):
-    for i in range(10):
+    for i in range(wgm.shape[0]):
+    #for i in range(10):
         prompt = wgm[i]['prompt']
         response = wgm[i]['response']
         #response = response if (response and response.strip()) else None
