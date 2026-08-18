@@ -57,15 +57,16 @@ A list of available datasets and models, along with their CLI identifiers, is pr
 | [MedSafetyBench](https://github.com/AI4LIFE-GROUP/med-safety-bench)                | msb      |
 | [PatientSafetyBench](https://huggingface.co/datasets/microsoft/PatientSafetyBench) | psb      |
 | [ExpGuardMix](https://huggingface.co/datasets/6rightjade/expguardmix)              | egm      |
+| [WildGuardMix](https://huggingface.co/datasets/allenai/wildguardmix)               | wgm      |
 ### Models
 
-| Model           | Developed By | Parameters | CLI Name                                                                        |
-| --------------- | ------------ | ---------- | ------------------------------------------------------------------------------- |
-| LlamaGuard      | Meta         | 1B         | [LlamaGuard1B](https://huggingface.co/meta-llama/Llama-Guard-3-1B)              |
-| GraniteGuardian | IBM          | 2B         | [GraniteGuardian2B](https://huggingface.co/ibm-granite/granite-guardian-3.1-2b) |
-| ShieldGemma     | Google       | 2B         | [ShieldGemma2B](https://huggingface.co/google/shieldgemma-2b)                   |
-| WildGuard       | allenai      | 7B         | [WildGuard7B](https://huggingface.co/allenai/wildguard)                         |
-| LlamaGuard      | Meta         | 8B         | [LlamaGuard8B](https://huggingface.co/meta-llama/Llama-Guard-3-8B)              |
+| Model Name                                                                    | Developed By | Parameters | CLI Name          |
+| ----------------------------------------------------------------------------- | ------------ | ---------- | ----------------- |
+| [LlamaGuard](https://huggingface.co/meta-llama/Llama-Guard-3-1B)              | Meta         | 1B         | LlamaGuard1B      |
+| [GraniteGuardian](https://huggingface.co/ibm-granite/granite-guardian-3.1-2b) | IBM          | 2B         | GraniteGuardian2B |
+| [ShieldGemma](https://huggingface.co/google/shieldgemma-2b)                   | Google       | 2B         | ShieldGemma2B     |
+| [WildGuard](https://huggingface.co/allenai/wildguard)                         | allenai      | 7B         | WildGuard7B       |
+| [LlamaGuard](https://huggingface.co/meta-llama/Llama-Guard-3-8B)              | Meta         | 8B         | LlamaGuard8B      |
 
 **Note:** These identifiers are used as CLI arguments in `main.py`
 ## Notes
