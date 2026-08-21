@@ -34,7 +34,7 @@ Script responsible for setting up and running inference of the selected guardrai
 - Additional relevant functions necessary for either running the model or calculating the model's response probability score
 
 ### `dataset_testing.py`
-Script responsible to benchmark a given guardrail model on the specified dataset. Particularly, the script manages:
+Script responsible for benchmark a given guardrail model on the specified dataset. Particularly, the script manages:
 - Dataset loading (either from HuggingFace or from the cloned GitHub folder)
 - Checking if there's already an existing `.json` file for the dataset's results, eventually creating it (otherwise it loads in a variable its content results)
 - For each entry in the dataset, it passes it to the model and gathers all results

@@ -1,6 +1,7 @@
-# Evaluating AI Guardrails for EU AI Act Compliance
+# Guardrails for EU AI Act Compliance
 ## Table of Contents
 
+- [Repository Structure](#repository-structure)
 - [Get Started](#get-started)
 - [Versions](#versions)
 - [How to Run](#how-to-run)
@@ -10,12 +11,26 @@
 
 ---
 
+## Repository Structure
+
+``` text
+.
+├── README.md
+├── appendix         # External appendix of this study
+├── plots            # Directory containing single plot files
+├── results          # Directory containing both raw and processed results
+├── scripts          # Directory containing cluster-specific scripts and the python script for printing LaTeX tables from the processed results
+└── src              # Directory containing the benchmark scripts along with the script for analyzing the raw results
+```
+
 ## Get Started
 First, clone this repository to your local machine:
 
 ``` sh
-git clone https://github.com/FrancescoBrunelli/Evaluating-AI-Guardrails-for-EU-AI-Act-Compliance.git
+git clone <repository_link>
 ```
+
+(Replace `<repository_link>` with this repository's URL.)
 
 After cloning, visit the [set up scripts](scripts/README.md#setup-scripts) section.
 
